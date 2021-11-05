@@ -30,6 +30,6 @@
                     <input type="submit" value="Huy phong cho khach hang qua dien thoai">
                 </form>-->
         <button onclick="location.href = 'seller/SellerBookRoom.jsp'">Dat phong cho khach qua dien thoai</button>
-        <button onclick="location.href = 'seller/SellerBookRoom.jsp'">Huy hang cho khach qua dien thoai</button>
+        <button onclick="location.href = 'seller/SellerCancelRoomView.jsp'">Huy phong cho khach qua dien thoai</button>
     </body>
 </html>

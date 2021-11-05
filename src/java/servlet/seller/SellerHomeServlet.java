@@ -27,7 +27,7 @@ public class SellerHomeServlet extends HttpServlet{
         ServletContext context = getServletContext();
         String url = "/seller/SellerHome.jsp";
         User user = new User("username", "password", "name", "possition", "birthday", "address", "mail", "phone number");
-        user.setID(0);
+        user.setID(3);
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
         

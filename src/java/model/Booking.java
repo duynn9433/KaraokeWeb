@@ -82,6 +82,11 @@ public class Booking implements Serializable{
     public void setListBookedRoom(List<BookedRoom> listBookedRoom) {
         this.listBookedRoom = listBookedRoom;
     }
+
+    @Override
+    public String toString() {
+        return "Booking{" + "ID=" + ID + ", bookDate=" + bookDate + ", saleOff=" + saleOff + ", note=" + note + ", user=" + user + ", client=" + client + ", listBookedRoom=" + listBookedRoom + '}';
+    }
     
     
 }

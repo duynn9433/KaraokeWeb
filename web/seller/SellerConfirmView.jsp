@@ -26,6 +26,7 @@
             alert(msg);
         </script>
         <%
+            request.getSession().removeAttribute("confirmBookingMsg");
             }
         %>
         <h2>Thong tin phong</h2>
