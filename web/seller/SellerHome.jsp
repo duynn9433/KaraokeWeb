@@ -29,7 +29,11 @@
                     <input type ="hidden" name="user" value=${user}>
                     <input type="submit" value="Huy phong cho khach hang qua dien thoai">
                 </form>-->
-        <button onclick="location.href = 'seller/SellerBookRoom.jsp'">Dat phong cho khach qua dien thoai</button>
-        <button onclick="location.href = 'seller/SellerCancelRoomView.jsp'">Huy phong cho khach qua dien thoai</button>
+        <form action ="<c:url value="/seller/SellerBookRoom.jsp"/>" method="post">
+            <input type="submit" value="Dat phong cho khach qua dien thoai">
+        </form>
+        <form action ="<c:url value="/seller/SellerCancelRoomView.jsp"/>" method="post">
+            <input type="submit" value="Huy phong cho khach qua dien thoai">
+        </form>
     </body>
 </html>

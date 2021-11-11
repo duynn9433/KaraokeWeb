@@ -5,12 +5,10 @@
  */
 package servlet.seller;
 
-import DAO.BookingDAO;
 import DAO.ClientDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +19,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.JOptionPane;
 import model.Booking;
 import model.Client;
 import model.User;
@@ -30,8 +27,8 @@ import model.User;
  *
  * @author duynn
  */
-@WebServlet(name = "SellerConfirmBookingServlet", urlPatterns = {"/SellerConfirmBookingServlet"})
-public class SellerConfirmBookingServlet extends HttpServlet {
+@WebServlet(name = "SellerAddClientServlet", urlPatterns = {"/SellerAddClientServlet"})
+public class SellerAddClientServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -49,32 +46,36 @@ public class SellerConfirmBookingServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         System.out.println("------------");
-        System.out.println("SellerConfirmBooking"+user.toString());
+        System.out.println("SellerAddClient" + user.toString());
+
+        ClientDAO clientDAO = new ClientDAO();
+        Client client = null;
         Booking booking = (Booking) session.getAttribute("booking");
-        
-        BookingDAO bookingDAO = new BookingDAO();
-        String msg = null;
-        
         String action = request.getParameter("action");
         System.out.println("action " + action);
-        if (action.equals("Xacnhan")) {
+        if (action.equals("them")) {
+            String name = request.getParameter("name");
+            String phoneNumber = request.getParameter("phoneNumber");
+            String address = request.getParameter("address");
+            String email = request.getParameter("email");
             String note = request.getParameter("note");
-            booking.setBookDate(LocalDateTime.now());
-            booking.setUser(user);
-            booking.setNote(note);
+
+            client = new Client(name, address, email, phoneNumber, note);
+            client.setIsActive(true);
+            System.out.println(client.toString());
             try {
-                bookingDAO.addBooking(booking);
-                msg="Luu thanh cong";
+                clientDAO.addClient(client);
+                booking.setClient(client);
+                session.removeAttribute("booking");
+                session.setAttribute("booking", booking);
+                
+                url = "/seller/SellerConfirmView.jsp";
             } catch (SQLException ex) {
-                msg="Luu that bai";
-                Logger.getLogger(SellerConfirmBookingServlet.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
+                Logger.getLogger(SellerAddClientServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            System.out.println(msg);
-            url="/seller/SellerConfirmView.jsp";
         }
-        request.getSession().removeAttribute("confirmBookingMsg");
-        request.getSession().setAttribute("confirmBookingMsg", msg);
         context.getRequestDispatcher(url).forward(request, response);
     }
 

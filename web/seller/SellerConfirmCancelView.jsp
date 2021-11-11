@@ -15,18 +15,18 @@
     <body>
         <%
             String msg = (String) request.getSession().getAttribute("sellerConfirmCancelMsg");
-            System.out.println("View"+msg);
+            System.out.println("View" + msg);
             //msg="luu that bai";
             if (msg == null) {
 
             } else {
         %>
-                <script type="text/javascript">
-                    var msg = "${sellerConfirmCancelMsg}";
-                    alert(msg);
-                </script>
+        <script type="text/javascript">
+            var msg = "${sellerConfirmCancelMsg}";
+            alert(msg);
+        </script>
         <%
-            request.getSession().removeAttribute("sellerConfirmCancelMsg");
+                request.getSession().removeAttribute("sellerConfirmCancelMsg");
             }
         %>
         <h1>Thong tin huy phong</h1>
@@ -56,6 +56,10 @@
         <form action="<c:url value="/SellerConfirmCancelServlet" />" method="post">
             <input type="hidden" name="action"  value ="xacNhan">
             <input type="submit" value="Xac nhan"  />
+        </form>
+        <form action ="<c:url value="/seller/SellerHome.jsp"/>" method="post">
+            <%request.getSession().removeAttribute("listDeleteBookedRoom");%>
+            <input type="submit" value="Home">
         </form>
     </body>
 </html>

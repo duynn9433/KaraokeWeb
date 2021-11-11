@@ -76,6 +76,9 @@
 
         <form action="<c:url value="/SellerBookRoomInfo" />" method="post">
             <input type="hidden" name="action" value="Them">
+            <input type="hidden" name="name" value="${name}">
+            <input type="hidden" name="phoneNumber" value="${phoneNumber}">
+            
             <input type="submit" value="Them">
         </form>
 

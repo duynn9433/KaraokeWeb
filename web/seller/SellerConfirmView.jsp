@@ -13,9 +13,9 @@
         <title>Seller Confirm Booking</title>
     </head>
     <body>
-         <%
+        <%
             String msg = (String) request.getSession().getAttribute("confirmBookingMsg");
-            System.out.println("View"+msg);
+            System.out.println("View" + msg);
             //msg="luu that bai";
             if (msg == null) {
 
@@ -26,7 +26,7 @@
             alert(msg);
         </script>
         <%
-            request.getSession().removeAttribute("confirmBookingMsg");
+                request.getSession().removeAttribute("confirmBookingMsg");
             }
         %>
         <h2>Thong tin phong</h2>
@@ -81,8 +81,13 @@
                 <td><input type="text" name="note"></td>
             </tr>
         </table>
-        <input type="hidden" name="action" value="Xac nhan">
-        <input type="submit" name="Xac nhan">
+        <input type="hidden" name="action" value="Xacnhan">
+        <input type="submit" value="Xac nhan">
     </form>
+    <form action ="<c:url value="/seller/SellerHome.jsp"/>" method="post">
+        <%request.getSession().removeAttribute("booking");%>
+        <input type="submit" value="Home">
+    </form>
+
 </body>
 </html>

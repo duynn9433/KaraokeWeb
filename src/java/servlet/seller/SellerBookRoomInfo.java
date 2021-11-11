@@ -76,6 +76,11 @@ public class SellerBookRoomInfo extends HttpServlet {
             request.setAttribute("phoneNumber", phoneNumber);
             url="/seller/SellerBookRoomInfoView.jsp";
         }else if(action.equals("Them")){
+            name = request.getParameter("name");
+            phoneNumber = request.getParameter("phoneNumber");
+            request.setAttribute("name", name);
+            request.setAttribute("phoneNumber", phoneNumber);
+            url="/seller/SellerAddClientView.jsp";
             
         }else if(action.equals("Luu")){
             listClient = (List<Client>) session.getAttribute("listClient");

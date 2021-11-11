@@ -12,9 +12,23 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>Hello</div>
-        <form action="<c:url value="/sellerHomeServlet" />" method ="post">
-        <input type="submit" value ='Dang nhap Seller'>
+        <h1>Dang nhap</h1>
+        <form action="<c:url value="/CheckLoginServlet" />" method ="post">
+            <input type="hidden" name="action" value="checkLogin">
+            <table>
+                <tr>
+                    <td>Username:</td>
+                    <td><input type="text" name="username" value="seller"></td>
+                </tr>
+                <tr>
+                    <td>Password:</td>
+                    <td><input type="password" name="password" value="seller"></td>
+                </tr>
+            </table>
+        <input type="submit" value ='Dang nhap'>
+        
+<!--        <form action="<c:url value="/sellerHomeServlet" />" method ="post">
+        <input type="submit" value ='Dang nhap Seller'>-->
     </form>
 </body>
 </html>

@@ -51,7 +51,22 @@ public class ClientDAO extends DAO {
     }
 
     public void addClient(Client c) throws SQLException {
-        String sql = "inser into tblclient values (?,?,?,?,?,?,?)";
+        //set id
+        int clientMaxID;
+        PreparedStatement psinit = null;
+        ResultSet rsinit = null;
+
+        psinit = con.prepareStatement("select max(c.id) as max from tblclient c");
+        rsinit = psinit.executeQuery();
+        rsinit.next();
+        clientMaxID = rsinit.getInt("max");
+        c.setID(++clientMaxID);
+
+        psinit.close();
+        rsinit.close();
+        System.out.println("ClientDAO " + c.toString());
+        //
+        String sql = "insert into tblclient values (?,?,?,?,?,?,?)";
 
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, c.getID());

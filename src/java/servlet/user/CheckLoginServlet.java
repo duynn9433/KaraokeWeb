@@ -3,15 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet.seller;
+package servlet.user;
 
-import DAO.BookingDAO;
 import DAO.ClientDAO;
+import DAO.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
@@ -21,7 +19,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.JOptionPane;
 import model.Booking;
 import model.Client;
 import model.User;
@@ -30,8 +27,8 @@ import model.User;
  *
  * @author duynn
  */
-@WebServlet(name = "SellerConfirmBookingServlet", urlPatterns = {"/SellerConfirmBookingServlet"})
-public class SellerConfirmBookingServlet extends HttpServlet {
+@WebServlet(name = "CheckLoginServlet", urlPatterns = {"/CheckLoginServlet"})
+public class CheckLoginServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,37 +41,49 @@ public class SellerConfirmBookingServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         ServletContext context = getServletContext();
-        String url = "/seller/SellerBookRoom.jsp";
+        String url = "/index.jsp";
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        System.out.println("------------");
-        System.out.println("SellerConfirmBooking"+user.toString());
-        Booking booking = (Booking) session.getAttribute("booking");
-        
-        BookingDAO bookingDAO = new BookingDAO();
-        String msg = null;
-        
+        if (!session.isNew()) {
+            session.invalidate();
+            session = request.getSession();
+        }
+        UserDAO userDAO = new UserDAO();
         String action = request.getParameter("action");
         System.out.println("action " + action);
-        if (action.equals("Xacnhan")) {
-            String note = request.getParameter("note");
-            booking.setBookDate(LocalDateTime.now());
-            booking.setUser(user);
-            booking.setNote(note);
+        if (action.equals("checkLogin")) {
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            User user = new User();
+            user.setUsername(username);
+            user.setPassword(password);
+
+            boolean check = false;
             try {
-                bookingDAO.addBooking(booking);
-                msg="Luu thanh cong";
+                check = userDAO.checkLogin(user);
             } catch (SQLException ex) {
-                msg="Luu that bai";
-                Logger.getLogger(SellerConfirmBookingServlet.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CheckLoginServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            System.out.println(msg);
-            url="/seller/SellerConfirmView.jsp";
+            if (check) {
+                session.setAttribute("user", user);
+                String position = user.getPosition();
+                System.out.println("position " + position);
+                switch (position) {
+                    case "manager":
+                        url = "/manager/ManagerHome.jsp";
+                        break;
+                    case "seller":
+                        url = "/seller/SellerHome.jsp";
+                        break;
+                    case "receptionist":
+                        url = "/receptionist/ReceptionistHome.jsp";
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
-        request.getSession().removeAttribute("confirmBookingMsg");
-        request.getSession().setAttribute("confirmBookingMsg", msg);
         context.getRequestDispatcher(url).forward(request, response);
     }
 
