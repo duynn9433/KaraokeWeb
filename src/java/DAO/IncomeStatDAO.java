@@ -23,7 +23,9 @@ public class IncomeStatDAO extends DAO{
     public IncomeStatDAO(){
         super();
     }
-    
+    /**
+     * @author nguyen ngoc duy
+     */
     public ArrayList<IncomeStat> getIncomeStat(LocalDateTime startDate, LocalDateTime endDate) {
         ArrayList<IncomeStat> res = new ArrayList<>();
         //sinh doi tuong IncomeStat voi startDay - endDay la dau cuoi thang

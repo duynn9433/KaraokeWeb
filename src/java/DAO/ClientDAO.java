@@ -23,7 +23,9 @@ public class ClientDAO extends DAO {
     public ClientDAO() {
         super();
     }
-
+    /**
+     * @author nguyen ngoc duy
+     */
     public List<Client> searchClient(String name, String phoneNumber) throws SQLException {
         List<Client> res = new ArrayList<>();
         String sql = "select * from tblclient c where c.name = ? and c.phoneNumber = ?";
@@ -49,7 +51,9 @@ public class ClientDAO extends DAO {
 
         return res;
     }
-
+    /**
+     * @author nguyen ngoc duy
+     */
     public void addClient(Client c) throws SQLException {
         //set id
         int clientMaxID;
@@ -79,7 +83,9 @@ public class ClientDAO extends DAO {
         ps.executeUpdate();
 
     }
-
+    /**
+     * @author nguyen ngoc duy
+     */
     public int getNextID() throws SQLException {
         String sql = "select max(c.id) as max from tblclient b";
         PreparedStatement ps = null;

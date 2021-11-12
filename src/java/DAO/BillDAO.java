@@ -21,7 +21,9 @@ public class BillDAO extends DAO{
     public BillDAO() {
         super();
     }
-    
+    /**
+     * @author nguyen ngoc duy
+     */
     public ArrayList<Bill> getBill(LocalDateTime startDay, LocalDateTime endDay){
 //        System.out.println(startDay);
 //        System.out.println(endDay);

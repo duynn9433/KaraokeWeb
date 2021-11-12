@@ -27,7 +27,9 @@ public class RoomDAO extends DAO {
     }
 
     /**
-     * @return cac phong co the dat
+     * @author nguyen ngoc duy
+     *
+     * @return cac phong trong co the dat
      */
     public List<Room> searchFreeRoom(LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
         List<Room> res = new ArrayList<>();
@@ -53,7 +55,9 @@ public class RoomDAO extends DAO {
 
         return res;
     }
-
+    /**
+     * @author nguyen ngoc duy
+     */
     public List<Room> searchFreeRoom2(LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
         List<Room> res = new ArrayList<>();
         List<Room> listAllRoom = getALlRoom();
@@ -67,6 +71,8 @@ public class RoomDAO extends DAO {
     }
 
     /**
+     * @author nguyen ngoc duy
+     *
      * @return toan bo cac phong dang hoat dong
      */
     public List<Room> getALlRoom() {
@@ -93,6 +99,8 @@ public class RoomDAO extends DAO {
     }
 
     /**
+     * @author nguyen ngoc duy
+     *
      * @return cac phong dang duoc dat
      */
     public List<Room> getRoomFromBooking(LocalDateTime startDate, LocalDateTime endDate) throws SQLException {

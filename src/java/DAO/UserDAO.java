@@ -10,7 +10,9 @@ public class UserDAO extends DAO {
     public UserDAO() {
         super();
     }
-
+    /**
+     * @author nguyen ngoc duy
+     */
     public boolean checkLogin(User user) throws SQLException {
         boolean result = false;
         String sql = "SELECT * FROM tbluser WHERE username = ? AND password = ?";

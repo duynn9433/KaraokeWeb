@@ -28,6 +28,8 @@ public class BookingDAO extends DAO {
     }
 
     /**
+     * @author nguyen ngoc duy
+     *
      * <p>
      * tra ve cac Booking theo ngay checkin checkout</p>
      * <p>
@@ -186,6 +188,9 @@ public class BookingDAO extends DAO {
         return res;
     }
 
+    /**
+     * @author nguyen ngoc duy
+     */
     public void addBooking(Booking booking) throws SQLException {
         //set id
         int bookingMaxID;
@@ -239,6 +244,9 @@ public class BookingDAO extends DAO {
 
     }
 
+    /**
+     * @author nguyen ngoc duy
+     */
     public List<Booking> searchBookingByClient(String clientName, String clientPhoneNumber) throws SQLException {
         List<Booking> res = new ArrayList<>();
         String sqlBooking = "{call getBookingByClient(?,?)}";
@@ -330,6 +338,9 @@ public class BookingDAO extends DAO {
         return res;
     }
 
+    /**
+     * @author nguyen ngoc duy
+     */
     public void deleteBooking(List<Booking> listBooking, List<BookedRoom> listDeleteBookedRoom) throws SQLException {
         String sqlBooking = "delete from tblbooking where id=?";
         String sqlBookedRoom = "delete from tblbookedroom where id=?";
