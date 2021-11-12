@@ -233,7 +233,7 @@ public class BookingDAO extends DAO {
             ps1.setString(5, i.getNote());
             ps1.setInt(6, booking.getID());
             ps1.setInt(7, i.getRoom().getID());
-            ps1.setBoolean(8, false);
+            ps1.setBoolean(8, i.isIsCheckin());
             ps1.executeUpdate();
         }
 
