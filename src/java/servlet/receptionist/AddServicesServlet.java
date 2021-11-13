@@ -4,8 +4,10 @@
  */
 package servlet.receptionist;
 
+import DAO.ServiceDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,48 +15,60 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.User;
+import model.Booking;
+import model.Service;
 
 /**
  *
  * @author xxxx9
  */
-@WebServlet(name = "ReceptionistHomeServlet", urlPatterns = {"/ReceptionistHomeServlet"})
-public class ReceptionistHomeServlet extends HttpServlet {
+@WebServlet(name = "AddServicesServlet", urlPatterns = {"/AddServicesServlet"})
+public class AddServicesServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    public static String REQUEST_BOOKING = "addservices_request_booking";
+    public static String RETURN_BOOKING = "addservices_return_booking";
+    
+    
+    static String SESSION_BOOKING = "addservices_session_booking";
+    static String SESSION_SERVICES = "addservices_session_services";
+    static String LIST_SERVICE = "listServices";
+    static String BOOKING = "booking";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;harset=UTF-8");
-
+        response.setContentType("text/html;charset=UTF-8");
         ServletContext context = getServletContext();
         HttpSession session = request.getSession();
 
-        String url = "/receptionist/ReceptionistHome.jsp";
-
-        String action = (String) request.getParameter("action");
+        String url = "/receptionist/AddServices.jsp";
 
         try {
-            if (action.equals("ACTION_CHECKIN")) {
-                url = "/receptionist/Checkin.jsp";
-            } else if (action.equals("ACTION_CHECKOUT")) {
-                url = "/receptionist/Checkout.jsp";
+            if (request.getParameter("ADD_SERVICE") != null) {
+                
+                
+            } else if (request.getParameter("DONE") != null) {
+            } else if (request.getParameter("SEARCH_SERVICE") != null) {
+                ServiceDao dao = new ServiceDao();
+                String name = request.getParameter("service_name");
+                List<Service> services = dao.findService(name);
+                             
+                session.setAttribute(SESSION_SERVICES, services);
+                request.setAttribute(LIST_SERVICE, services);
+                
+                Booking booking = (Booking) session.getAttribute(SESSION_BOOKING);
+                request.setAttribute(BOOKING, booking);
             }
-
+            else
+            {
+                Booking booking = (Booking) request.getAttribute(REQUEST_BOOKING);
+                session.setAttribute(SESSION_BOOKING, booking);
+                request.setAttribute(BOOKING, booking);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         context.getRequestDispatcher(url).forward(request, response);
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
