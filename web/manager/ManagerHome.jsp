@@ -29,7 +29,7 @@
         <form action ="<c:url value="/manager/.jsp"/>" method="post">
             <input type="submit" value="Quan li dich vu">
         </form>
-        <form action ="<c:url value="/manager/IncomeStatView.jsp"/>" method="post">
+        <form action ="<c:url value="/manager/SelectStatView.jsp"/>" method="post">
             <input type="submit" value="Xem bao cao thong ke">
         </form>
     </body>

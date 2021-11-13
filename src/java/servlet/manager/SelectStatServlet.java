@@ -5,7 +5,6 @@
  */
 package servlet.manager;
 
-import DAO.ClientDAO;
 import DAO.KaraokeBarDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,17 +15,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Booking;
-import model.Client;
 import model.KaraokeBar;
-import model.User;
 
 /**
  *
  * @author duynn
  */
-@WebServlet(name = "AddInfoKaraServlet", urlPatterns = {"/AddInfoKaraServlet"})
-public class AddInfoKaraServlet extends HttpServlet {
+@WebServlet(name = "SelectStatServlet", urlPatterns = {"/SelectStatServlet"})
+public class SelectStatServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,31 +38,24 @@ public class AddInfoKaraServlet extends HttpServlet {
         ServletContext context = getServletContext();
         String url = "/index.jsp";
         HttpSession session = request.getSession();
-
-        KaraokeBar karaoke = null;
-        KaraokeBarDAO karaokeBarDAO = new KaraokeBarDAO();
+        
         String msg = null;
         
         String action = request.getParameter("action");
         System.out.println("action " + action);
-        if (action.equals("them")) {
-            String name = request.getParameter("name");
-            String address = request.getParameter("address");
-            String des = request.getParameter("des");
-            karaoke = new KaraokeBar(0, name, address, des);
-            
-            try{
-                karaokeBarDAO.addInfoKara(karaoke);
-                msg="Them thanh cong";
-                url="/manager/AddInforKara.jsp";
-            }catch(Exception e){
-                e.printStackTrace();
-                msg="Them that bai";
-                url="/manager/AddInforKara.jsp";
+        if (action.equals("thongKe")) {
+            String object = request.getParameter("object");
+            String type = request.getParameter("type");
+            String mode = request.getParameter("mode");
+            if (object.equals("doanhThu") && type.equals("thoiGian") && mode.equals("thang")) {
+                url = "/manager/IncomeStatView.jsp";
+            } else {
+                msg="Comming soon!!!";
+                session.setAttribute("msg", msg);
+                url="/manager/SelectStatView.jsp";
             }
         }
-        request.getSession().setAttribute("addKaraMsg", msg);
-        request.getRequestDispatcher(url).forward(request, response);
+        context.getRequestDispatcher(url).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

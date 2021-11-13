@@ -231,7 +231,7 @@ public class BookingDAO extends DAO {
         ps.setBoolean(6, booking.isIsCheckout());
         ps.setInt(7, booking.getClient().getID());
         ps.setInt(8, booking.getUser().getID());
-        
+
         ps.executeUpdate();
 
         for (BookedRoom i : booking.getListBookedRoom()) {
@@ -245,13 +245,16 @@ public class BookingDAO extends DAO {
             ps1.setInt(7, i.getRoom().getID());
             ps1.executeUpdate();
 
-            for (BookedStaff staff : i.getListHiredStaff()) {
-                PreparedStatement ps2 = con.prepareStatement(sqlBookedStaff);
-                ps2.setInt(1, staff.getRating());
-                ps2.setInt(2, staff.getUser().getID());
-                ps2.setInt(3, i.getID());
-                ps2.executeUpdate();
+            if (i.getListHiredStaff()!=null) {
+                for (BookedStaff staff : i.getListHiredStaff()) {
+                    PreparedStatement ps2 = con.prepareStatement(sqlBookedStaff);
+                    ps2.setInt(1, staff.getRating());
+                    ps2.setInt(2, staff.getUser().getID());
+                    ps2.setInt(3, i.getID());
+                    ps2.executeUpdate();
+                }
             }
+
         }
 
     }
@@ -350,7 +353,7 @@ public class BookingDAO extends DAO {
                     BookedStaff bookedStaff = new BookedStaff();
                     bookedStaff.setID(rs5.getInt("ID"));
                     bookedStaff.setRating(rs5.getInt("rating"));
-                   
+
                     int staffId = rs5.getInt("tbluserID");
 
                     User staff = new User();
@@ -364,9 +367,9 @@ public class BookingDAO extends DAO {
                     staff.setPosition(rs6.getString("position"));
                     staff.setName(rs6.getString("name"));
                     staff.setPhoneNumber(rs6.getString("phoneNumber"));
-                    
+
                     bookedStaff.setUser(staff);
-                    
+
                     staffs.add(bookedStaff);
                 }
                 br.setListHiredStaff(staffs);
