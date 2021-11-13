@@ -41,6 +41,7 @@
                     <th>ID Booking</th>
                     <th>Ngay dat</th>
                     <th>ID Phong</th>
+                    <th>Ten </th>
                     <th>Checkin</th>
                     <th>Checkout</th>
                 </tr>
@@ -55,6 +56,7 @@
                             <td>${i.bookDate}</td>
 
                             <td>${j.room.ID}</td>
+                            <td>${j.room.name}</td>
                             <td>${j.checkin}</td>
                             <td>${j.checkout}</td>
 

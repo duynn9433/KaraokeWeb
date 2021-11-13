@@ -219,6 +219,8 @@ public class BookingDAO extends DAO {
         String sqlBooking = "{call insertBooking(?,?,?,?,?,?)}";
         String sqlBookedRoom = "{call insertBookedRoom(?,?,?,?,?,?,?,?)}";
         String sqlBookedStaff = "{call insertBookedStaff(?,?,?)}";
+		
+
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         PreparedStatement ps = con.prepareStatement(sqlBooking);
@@ -226,8 +228,10 @@ public class BookingDAO extends DAO {
         ps.setString(2, dtf.format(booking.getBookDate()));
         ps.setFloat(3, booking.getSaleOff());
         ps.setString(4, booking.getNote());
-        ps.setInt(5, booking.getUser().getID());
-        ps.setInt(6, booking.getClient().getID());
+        ps.setBoolean(5, booking.isIsCheckin());
+        ps.setBoolean(6, booking.isIsCheckout());
+        ps.setInt(7, booking.getUser().getID());
+        ps.setInt(8, booking.getClient().getID());
         ps.executeUpdate();
 
         for (BookedRoom i : booking.getListBookedRoom()) {
@@ -239,7 +243,6 @@ public class BookingDAO extends DAO {
             ps1.setString(5, i.getNote());
             ps1.setInt(6, booking.getID());
             ps1.setInt(7, i.getRoom().getID());
-            ps1.setBoolean(8, i.isIsCheckin());
             ps1.executeUpdate();
             
             for(BookedStaff staff : i.getListHiredStaff())
@@ -278,6 +281,8 @@ public class BookingDAO extends DAO {
             b.setBookDate(rs0.getTimestamp("bookDate").toLocalDateTime());
             b.setSaleOff(rs0.getFloat("saleOff"));
             b.setNote(rs0.getString("note"));
+            b.setIsCheckin(rs0.getBoolean("isCheckin"));
+            b.setIsCheckout(rs0.getBoolean("isCheckout"));
 
             User u = new User();
             PreparedStatement ps1 = con.prepareStatement(sqlUser);
@@ -311,35 +316,36 @@ public class BookingDAO extends DAO {
             ps3.setInt(1, b.getID());
             ResultSet rs3 = ps3.executeQuery();
             while (rs3.next()) {
-                if (rs3.getBoolean("isCheckin")) {
-                    BookedRoom br = new BookedRoom();
-                    br.setID(rs3.getInt("ID"));
-                    br.setCheckin(rs3.getTimestamp("checkin").toLocalDateTime());
-                    br.setCheckout(rs3.getTimestamp("checkout").toLocalDateTime());
-                    br.setPricePerHour(rs3.getFloat("pricePerHour"));
-                    //br.setAmount(rs3.getFloat("amount"));
-                    br.setTotalPrice(br.getPricePerHour() * br.getAmount());
-                    br.setNote(rs3.getString("note"));
-                    br.setIsCheckin(rs3.getBoolean("isCheckin"));
 
-                    //room
-                    Room room = new Room();
-                    PreparedStatement ps4 = con.prepareStatement(sqlRoom);
-                    ps4.setInt(1, br.getID());
-                    ResultSet rs4 = ps4.executeQuery();
-                    rs4.next();
-                    room.setID(rs4.getInt("id"));
-                    room.setSize(rs4.getString("size"));
-                    room.setType(rs4.getString("type"));
-                    room.setPricePerHour(rs4.getFloat("pricePerHour"));
-                    room.setDescription(rs4.getString("description"));
-                    br.setRoom(room);
+                BookedRoom br = new BookedRoom();
+                br.setID(rs3.getInt("ID"));
+                br.setCheckin(rs3.getTimestamp("checkin").toLocalDateTime());
+                br.setCheckout(rs3.getTimestamp("checkout").toLocalDateTime());
+                br.setPricePerHour(rs3.getFloat("pricePerHour"));
+                //br.setAmount(rs3.getFloat("amount"));
+                br.setTotalPrice(br.getPricePerHour() * br.getAmount());
+                br.setNote(rs3.getString("note"));
 
-                    listBookedRoom.add(br);
-                }
+                //room
+                Room room = new Room();
+                PreparedStatement ps4 = con.prepareStatement(sqlRoom);
+                ps4.setInt(1, br.getID());
+                ResultSet rs4 = ps4.executeQuery();
+                rs4.next();
+                room.setID(rs4.getInt("id"));
+                room.setName(rs4.getString("name"));
+                room.setSize(rs4.getString("size"));
+                room.setType(rs4.getString("type"));
+                room.setPricePerHour(rs4.getFloat("pricePerHour"));
+                room.setDescription(rs4.getString("description"));
+                br.setRoom(room);
+
+                listBookedRoom.add(br);
             }
             b.setListBookedRoom(listBookedRoom);
-            if ((!b.getListBookedRoom().isEmpty()) && b.getListBookedRoom() != null) {
+
+            //xoa booking => chua checkin va chua thanh toan thi moi hien thi
+            if ((!b.isIsCheckin()) && (!b.isIsCheckout())) {
                 res.add(b);
             }
 
@@ -356,15 +362,15 @@ public class BookingDAO extends DAO {
         String sqlBookedRoom = "delete from tblbookedroom where id=?";
         for (Booking b : listBooking) {
             List<BookedRoom> listBr = b.getListBookedRoom();
-            
-            for (int indexBr = 0; indexBr<listBr.size();indexBr++) {
+
+            for (int indexBr = 0; indexBr < listBr.size(); indexBr++) {
                 BookedRoom br = b.getListBookedRoom().get(indexBr);
-                for(int i =0 ;i<listDeleteBookedRoom.size();i++){
-                    if(listDeleteBookedRoom.get(i).getID() == br.getID()){
+                for (int i = 0; i < listDeleteBookedRoom.size(); i++) {
+                    if (listDeleteBookedRoom.get(i).getID() == br.getID()) {
                         PreparedStatement ps1 = con.prepareStatement(sqlBookedRoom);
                         ps1.setInt(1, br.getID());
                         ps1.executeUpdate();
-                        
+
                         listBr.remove(indexBr);
                         listDeleteBookedRoom.remove(i);
                         i--;

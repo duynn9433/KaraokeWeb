@@ -22,9 +22,47 @@ public class Booking implements Serializable{
     private User user;
     private Client client;
     private List<BookedRoom> listBookedRoom;
+    private boolean isCheckin;
+    private boolean isCheckout;
+
+    public boolean isIsCheckin() {
+        return isCheckin;
+    }
+
+    public void setIsCheckin(boolean isCheckin) {
+        this.isCheckin = isCheckin;
+    }
+
+    public boolean isIsCheckout() {
+        return isCheckout;
+    }
+
+    public void setIsCheckout(boolean isCheckout) {
+        this.isCheckout = isCheckout;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" + "ID=" + ID + ", bookDate=" + bookDate + ", saleOff=" + saleOff + ", note=" + note + ", user=" + user + ", client=" + client + ", listBookedRoom=" + listBookedRoom + ", isCheckin=" + isCheckin + ", isCheckout=" + isCheckout + '}';
+    }
+
+    public Booking(int ID, LocalDateTime bookDate, float saleOff, String note, User user, Client client, List<BookedRoom> listBookedRoom, boolean isCheckin, boolean isCheckout) {
+        this.ID = ID;
+        this.bookDate = bookDate;
+        this.saleOff = saleOff;
+        this.note = note;
+        this.user = user;
+        this.client = client;
+        this.listBookedRoom = listBookedRoom;
+        this.isCheckin = isCheckin;
+        this.isCheckout = isCheckout;
+    }
+    
 
     public Booking() {
         super();
+        isCheckin=false;
+        isCheckout=false;
     }
 
     public int getID() {
@@ -83,10 +121,7 @@ public class Booking implements Serializable{
         this.listBookedRoom = listBookedRoom;
     }
 
-    @Override
-    public String toString() {
-        return "Booking{" + "ID=" + ID + ", bookDate=" + bookDate + ", saleOff=" + saleOff + ", note=" + note + ", user=" + user + ", client=" + client + ", listBookedRoom=" + listBookedRoom + '}';
-    }
+
     
     
 }

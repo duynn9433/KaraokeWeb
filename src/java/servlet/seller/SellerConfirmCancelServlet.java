@@ -63,16 +63,17 @@ public class SellerConfirmCancelServlet extends HttpServlet {
                 session.removeAttribute("listBooking");
                 session.removeAttribute("listDeleteBookedRoom");
                 System.out.println("Xoa thanh cong");
+                request.getSession().removeAttribute("listDeleteBookedRoom");
             } catch (SQLException ex) {
-                msg="Xoa khong thanh cong";
+                msg = "Xoa khong thanh cong";
                 Logger.getLogger(SellerConfirmCancelServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             url = "/seller/SellerConfirmCancelView.jsp";
         } else if (action.equals("huy")) {
 
         }
-        
+
         session.setAttribute("sellerConfirmCancelMsg", msg);
         request.getRequestDispatcher(url).forward(request, response);
     }

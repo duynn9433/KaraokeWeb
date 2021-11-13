@@ -24,15 +24,6 @@ public class BookedRoom implements Serializable{
     private Room room;
     private List<UsedService> listUsedService;
     private List<BookedStaff> listHiredStaff;
-    private boolean isCheckin;
-
-    public boolean isIsCheckin() {
-        return isCheckin;
-    }
-
-    public void setIsCheckin(boolean isCheckin) {
-        this.isCheckin = isCheckin;
-    }
 
     public BookedRoom() {
         super();

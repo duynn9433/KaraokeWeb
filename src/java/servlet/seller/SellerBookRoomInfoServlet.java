@@ -31,7 +31,7 @@ import model.User;
  * @author duynn
  */
 @WebServlet(name = "SellerBookRoomInfo", urlPatterns = {"/SellerBookRoomInfo"})
-public class SellerBookRoomInfo extends HttpServlet {
+public class SellerBookRoomInfoServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -67,7 +67,7 @@ public class SellerBookRoomInfo extends HttpServlet {
                 listClient = clientDAO.searchClient(name, phoneNumber);
                 for(Client c : listClient) System.out.println(c.toString());
             } catch (SQLException ex) {
-                Logger.getLogger(SellerBookRoomInfo.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SellerBookRoomInfoServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             
             request.getSession().removeAttribute("listClient");

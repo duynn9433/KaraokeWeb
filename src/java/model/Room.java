@@ -15,6 +15,7 @@ import java.util.Vector;
 public class Room implements Serializable {
 
     private int ID;
+    private String name;
     private String size;
     private String type;
     private float pricePerHour;
@@ -33,12 +34,14 @@ public class Room implements Serializable {
         super();
     }
 
-    public Room(String size, String type, float pricePerHour, String description) {
-        super();
+    public Room(int ID, String name, String size, String type, float pricePerHour, String description, boolean isActive) {
+        this.ID = ID;
+        this.name = name;
         this.size = size;
         this.type = type;
         this.pricePerHour = pricePerHour;
         this.description = description;
+        this.isActive = isActive;
     }
 
     public int getID() {
@@ -81,17 +84,20 @@ public class Room implements Serializable {
         this.description = description;
     }
 
-    public Object[] toObject() {
-        return new Object[]{
-                ID, size, type,pricePerHour,description
-        };
-    }
-
     @Override
     public String toString() {
-        return "Room{" + "ID=" + ID + ", size=" + size + ", type=" + type + ", pricePerHour=" + pricePerHour + ", description=" + description + ", isActive=" + isActive + '}';
+        return "Room{" + "ID=" + ID + ", name=" + name + ", size=" + size + ", type=" + type + ", pricePerHour=" + pricePerHour + ", description=" + description + ", isActive=" + isActive + '}';
     }
-    
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
 }
 
 
