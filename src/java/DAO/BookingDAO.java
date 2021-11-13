@@ -219,7 +219,6 @@ public class BookingDAO extends DAO {
         String sqlBooking = "{call insertBooking(?,?,?,?,?,?)}";
         String sqlBookedRoom = "{call insertBookedRoom(?,?,?,?,?,?,?,?)}";
         String sqlBookedStaff = "{call insertBookedStaff(?,?,?)}";
-		
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -244,9 +243,8 @@ public class BookingDAO extends DAO {
             ps1.setInt(6, booking.getID());
             ps1.setInt(7, i.getRoom().getID());
             ps1.executeUpdate();
-            
-            for(BookedStaff staff : i.getListHiredStaff())
-            {
+
+            for (BookedStaff staff : i.getListHiredStaff()) {
                 PreparedStatement ps2 = con.prepareStatement(sqlBookedStaff);
                 ps2.setInt(1, staff.getRating());
                 ps2.setInt(2, staff.getUser().getID());
@@ -267,6 +265,7 @@ public class BookingDAO extends DAO {
         String sqlClient = "{call getClientByBooking(?)}";
         String sqlBookedRoom = "{call getBookedRoomByBooking(?)}";
         String sqlRoom = "{call getRoomByBookedRoom(?)}";
+        String sqlBookedStaff = "{call getStaffByBookedRoom(?)}";
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -339,6 +338,37 @@ public class BookingDAO extends DAO {
                 room.setPricePerHour(rs4.getFloat("pricePerHour"));
                 room.setDescription(rs4.getString("description"));
                 br.setRoom(room);
+
+                //Booked staff
+                List<BookedStaff> staffs = new ArrayList<>();
+                PreparedStatement ps5 = con.prepareStatement(sqlBookedStaff);
+                ps5.setInt(1, br.getID());
+                ResultSet rs5 = ps5.executeQuery();
+
+                while (rs5.next()) {
+                    BookedStaff bookedStaff = new BookedStaff();
+                    bookedStaff.setID(rs5.getInt("ID"));
+                    bookedStaff.setRating(rs5.getInt("rating"));
+                   
+                    int staffId = rs5.getInt("tbluserID");
+
+                    User staff = new User();
+                    PreparedStatement ps6 = con.prepareStatement(sqlUser);
+                    ps6.setInt(1, staffId);
+                    ResultSet rs6 = ps6.executeQuery();
+                    rs6.next();
+                    staff.setID(rs6.getInt("ID"));
+                    staff.setUsername(rs6.getString("username"));
+                    staff.setPassword(rs6.getString("password"));
+                    staff.setPosition(rs6.getString("position"));
+                    staff.setName(rs6.getString("name"));
+                    staff.setPhoneNumber(rs6.getString("phoneNumber"));
+                    
+                    bookedStaff.setUser(staff);
+                    
+                    staffs.add(bookedStaff);
+                }
+                br.setListHiredStaff(staffs);
 
                 listBookedRoom.add(br);
             }

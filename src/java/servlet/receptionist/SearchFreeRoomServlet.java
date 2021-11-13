@@ -102,7 +102,6 @@ public class SearchFreeRoomServlet extends HttpServlet {
                 BookedRoom br = new BookedRoom();
                 br.setCheckin(checkin);
                 br.setCheckout(checkout);
-                br.setIsCheckin(false);
                 br.setRoom(listRoom.get(index));
                 br.setPricePerHour(br.getRoom().getPricePerHour());
                 br.setAmount(checkout.getHour() - checkin.getHour()); //****************************************

@@ -91,6 +91,8 @@ public class CheckinServlet extends HttpServlet {
 
                     List<Booking> bookings = dao.searchBookingByClient(cusName, cusPhone);
 
+                    System.out.println(bookings.get(0).getListBookedRoom().get(0).getListHiredStaff().size());
+                    
                     request.setAttribute(REQUEST_BOOKINGS, bookings);
                     session.setAttribute(SESSION_BOOKINGS, bookings);
                     session.setAttribute(SESSION_CLIENT, client);
