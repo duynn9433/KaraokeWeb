@@ -4,6 +4,8 @@
     Author     : xxxx9
 --%>
 
+<%@page import="model.User"%>
+<%@page import="model.Client"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -13,6 +15,13 @@
         <title>Nhan vien le tan</title>
     </head>
     <body>
+        
+        <% 
+            User user = (User) session.getAttribute("user") ;
+        %>
+        <h2>${user.name}</h2>
+        
+        
         <form action="<c:url value="/ReceptionistHomeServlet"/>" method="POST">
             <input type="hidden" name="action" value="ACTION_CHECKIN"/>
             <input type="submit" value="Checkin" />

@@ -218,6 +218,7 @@ public class BookingDAO extends DAO {
         //add booking
         String sqlBooking = "{call insertBooking(?,?,?,?,?,?)}";
         String sqlBookedRoom = "{call insertBookedRoom(?,?,?,?,?,?,?,?)}";
+        String sqlBookedStaff = "{call insertBookedStaff(?,?,?)}";
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         PreparedStatement ps = con.prepareStatement(sqlBooking);
@@ -240,6 +241,15 @@ public class BookingDAO extends DAO {
             ps1.setInt(7, i.getRoom().getID());
             ps1.setBoolean(8, i.isIsCheckin());
             ps1.executeUpdate();
+            
+            for(BookedStaff staff : i.getListHiredStaff())
+            {
+                PreparedStatement ps2 = con.prepareStatement(sqlBookedStaff);
+                ps2.setInt(1, staff.getRating());
+                ps2.setInt(2, staff.getUser().getID());
+                ps2.setInt(3, i.getID());
+                ps2.executeUpdate();
+            }
         }
 
     }
@@ -301,7 +311,7 @@ public class BookingDAO extends DAO {
             ps3.setInt(1, b.getID());
             ResultSet rs3 = ps3.executeQuery();
             while (rs3.next()) {
-                if (!rs3.getBoolean("isCheckin")) {
+                if (rs3.getBoolean("isCheckin")) {
                     BookedRoom br = new BookedRoom();
                     br.setID(rs3.getInt("ID"));
                     br.setCheckin(rs3.getTimestamp("checkin").toLocalDateTime());
