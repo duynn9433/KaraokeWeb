@@ -52,7 +52,7 @@ public class SearchFreeRoomServlet extends HttpServlet {
         ServletContext context = getServletContext();
         String url = "/receptionist/SearchFreeRoom.jsp";
         HttpSession session = request.getSession();
-//        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute("user");
 //        System.out.println("------------");
 //        System.out.println(user.toString());
         LocalDateTime checkin = null;
@@ -113,6 +113,8 @@ public class SearchFreeRoomServlet extends HttpServlet {
             }
             b.setListBookedRoom(listBookedRoom);
             b.setBookDate(LocalDateTime.now());
+            b.setID(-1);
+            b.setUser(user);
             
             request.changeSessionId();
             session.setAttribute("booking", b);

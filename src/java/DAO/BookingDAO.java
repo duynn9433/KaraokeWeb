@@ -216,8 +216,8 @@ public class BookingDAO extends DAO {
         rsinit.close();
 
         //add booking
-        String sqlBooking = "{call insertBooking(?,?,?,?,?,?)}";
-        String sqlBookedRoom = "{call insertBookedRoom(?,?,?,?,?,?,?,?)}";
+        String sqlBooking = "{call insertBooking(?,?,?,?,?,?,?,?)}";
+        String sqlBookedRoom = "{call insertBookedRoom(?,?,?,?,?,?,?)}";
         String sqlBookedStaff = "{call insertBookedStaff(?,?,?)}";
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -229,8 +229,9 @@ public class BookingDAO extends DAO {
         ps.setString(4, booking.getNote());
         ps.setBoolean(5, booking.isIsCheckin());
         ps.setBoolean(6, booking.isIsCheckout());
-        ps.setInt(7, booking.getUser().getID());
-        ps.setInt(8, booking.getClient().getID());
+        ps.setInt(7, booking.getClient().getID());
+        ps.setInt(8, booking.getUser().getID());
+        
         ps.executeUpdate();
 
         for (BookedRoom i : booking.getListBookedRoom()) {
@@ -353,7 +354,7 @@ public class BookingDAO extends DAO {
                     int staffId = rs5.getInt("tbluserID");
 
                     User staff = new User();
-                    PreparedStatement ps6 = con.prepareStatement(sqlUser);
+                    PreparedStatement ps6 = con.prepareStatement("SELECT * FROM tbluser WHERE tbluser.ID = ?");
                     ps6.setInt(1, staffId);
                     ResultSet rs6 = ps6.executeQuery();
                     rs6.next();

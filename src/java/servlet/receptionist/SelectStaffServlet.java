@@ -4,9 +4,10 @@
  */
 package servlet.receptionist;
 
-import DAO.StaffDao;
+import DAO.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -16,6 +17,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.BookedRoom;
+import model.BookedStaff;
+import model.Booking;
 import model.User;
 
 /**
@@ -34,6 +38,15 @@ public class SelectStaffServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    public static String REQUEST_BOOKING = "selectstaff_request_booking";
+    public static String RETURN_BOOKING = "selectstaff_return_booking";
+    
+    
+    static String SESSION_BOOKING = "selectstaff_session_booking";
+    static String LIST_STAFF = "listStaffs";
+    static String SESSION_STAFF = "sessionStaffs";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -43,26 +56,61 @@ public class SelectStaffServlet extends HttpServlet {
 
         String url = "/receptionist/SelectStaff.jsp";
 
-        if (request.getParameter("action").equals("RETURN_STAFF")) {
-            String[] indexString = request.getParameterValues("selectedItems");
-            List<User> staffs = (List<User>) session.getAttribute("staffs");
-            List<User> res = new ArrayList<>();
-            for (String i : indexString) {
-                res.add(staffs.get(Integer.parseInt(i)));
-            }
-
-            session.removeAttribute("staffs");
-            session.setAttribute("return_staff", res);
-            session.setAttribute("action", "RETURN_STAFF");
+        if (request.getParameter("select_staff") != null) {
+            String[] selectStaff = request.getParameterValues("selectedStaff");
+            String[] selectBookedRoom = request.getParameterValues("selectedBooked");
             
-            url = "/CheckinServlet";
-        } else {
-            StaffDao dao = new StaffDao();
+            Booking booking = (Booking) session.getAttribute(SESSION_BOOKING);
+            int selectedBookedRoomIndex = Integer.parseInt(selectBookedRoom[0]);
+            BookedRoom br = booking.getListBookedRoom().get(selectedBookedRoomIndex);
+            
+            List<User> staffs = (List<User>) session.getAttribute(SESSION_STAFF);
+            
+            List<BookedStaff> brStaff = new ArrayList<>();
+            
+            List<Integer> removedStaff = new ArrayList<>();
+            
+            for (String i : selectStaff) {
+                User selected = staffs.get(Integer.parseInt(i));
+                
+                BookedStaff bs = new BookedStaff();
+                bs.setUser(selected);
+                
+                brStaff.add(bs);
+                
+                //staffs.remove(Integer.parseInt(i));
+                removedStaff.add(selected.getID());
+            }
+            
+            for(int i: removedStaff)
+            {
+                staffs.removeIf(u -> u.getID() == i);
+            }
+                       
+            br.setListHiredStaff(brStaff);
 
-            List<User> staffs = dao.getAllStaff();
-            request.setAttribute("staffs", staffs);
-
-            session.setAttribute("staffs", staffs);
+            request.setAttribute(LIST_STAFF, staffs);
+            session.setAttribute(SESSION_BOOKING, booking);
+            session.setAttribute(SESSION_STAFF, staffs);
+        } 
+        else if(request.getParameter("select_done") != null)
+        {
+            request.setAttribute(RETURN_BOOKING, session.getAttribute(SESSION_BOOKING));
+            session.setAttribute("action", "RETURN_STAFF");
+            url="/CheckinServlet";
+        }
+        else {
+            UserDAO dao = new UserDAO();
+            
+            Booking booking =(Booking) request.getAttribute(REQUEST_BOOKING);
+            
+            BookedRoom br = booking.getListBookedRoom().get(0);
+            
+            List<User> freeStaff = dao.getAllStaff(br.getCheckin(), br.getCheckout());
+            
+            request.setAttribute(LIST_STAFF, freeStaff);
+            session.setAttribute(SESSION_BOOKING, booking);
+            session.setAttribute(SESSION_STAFF, freeStaff);
         }
 
         context.getRequestDispatcher(url).forward(request, response);

@@ -24,20 +24,20 @@
 
 
         <form action="<c:url value="/CheckinServlet"/>" method="POST">
-            <input type="hidden" name="action" value="SEARCH_CUSTOMER"/>
+   
             <span>
                 <label for="customer_name">Tìm phòng: </label>
-                <input type="text" name="customer_name" id="customer_name"/>
-                <input type="text" name="customer_phone" id="customer_phone"/>
+                <input type="text" name="customer_name" id="customer_name" value = "Nguyen A"/>
+                <input type="text" name="customer_phone" id="customer_phone" value = "2000001"/>
                 <input type="submit" name="SEARCH_CUSTOMER" value="Tìm kiếm" />
             </span>
         </form>
 
         <br>
-        
+
         <h3>Thông tin khách hàng</h3>
         <h2>Tên: <c:out value="${sessionClient.name}" /></h2>
-        
+
 
         <h2>Danh sách Booking: </h2>
 
@@ -47,17 +47,15 @@
                 <input type="checkbox" name="selectedBooking" value="<c:out value="${statusBooking.index}"/>">
 
                 <table cellspacing="5" cellpadding="5" border="1">
-                    <th>
-                    <th>Id</th>
-                    <th>Mã phòng</th>
-                    <th>Thời gian đặt trước</th>
-                    </th>
+                    <tr>
+                        <th>Mã phòng</th>
+                        <th>Thời gian đặt trước</th>
+                    </tr>
 
                     <c:forEach var="bookedRoom" items="${booking.listBookedRoom}" varStatus="statusBooked">
                         <tr valign="top">
                             <td>${bookedRoom.room.ID}</td>
                             <td><tags:ldt date="${booking.bookDate}" pattern="dd/MM/yyyy"/></td>
-                            <td><input type="checkbox" name="selectedBookedRoom" value="<c:out value="${9}"/>"></td>
                         </tr>
                     </c:forEach>
 

@@ -40,11 +40,12 @@ public class CheckinServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-    static String SESSION_BOOKINGS = "sessionBookings";
+    static String SESSION_BOOKINGS = "checkinServlet_sessionBookings";
     static String SESSION_CLIENT = "sessionClient";
     static String REQUEST_BOOKINGS = "requestBookings";
     
+    static String SELECTING_STAFF_BOOKING = "SELECTING_STAFF_BOOKING";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -55,30 +56,70 @@ public class CheckinServlet extends HttpServlet {
 
         try {
             if (actionAttr != null) {
-              if (actionAttr.equals("ADD_BOOKING")) {
+                if (actionAttr.equals("ADD_BOOKING")) {
                     Booking b = (Booking) session.getAttribute("booking");
                     System.out.println("booked:" + b.getListBookedRoom().size());
 
                     List<Booking> bookings = (List<Booking>) session.getAttribute(SESSION_BOOKINGS);
-                    
-                    if(bookings == null) bookings = new ArrayList<Booking>();
-                    
+
+                    if (bookings == null) {
+                        bookings = new ArrayList<Booking>();
+                    }
+
                     bookings.add(b);
+                    
+                    Client client  = (Client) session.getAttribute(SESSION_CLIENT);
+                    
+                    b.setClient(client);
+                    
 
                     request.setAttribute(REQUEST_BOOKINGS, bookings);
                     session.setAttribute(SESSION_BOOKINGS, bookings);
                     url = "/receptionist/Checkin.jsp";
                 }
-              
+                else if (actionAttr.equals("RETURN_STAFF"))
+                {
+                    Booking booking = (Booking) request.getAttribute(SelectStaffServlet.RETURN_BOOKING);
+                    int i = (int) session.getAttribute(SELECTING_STAFF_BOOKING);
+                          
+                    List<Booking> sessionBookings = (List<Booking>) session.getAttribute(SESSION_BOOKINGS);
+                    sessionBookings.set(i, booking);
+                    
+                    request.setAttribute(REQUEST_BOOKINGS, sessionBookings);
+                }
+
                 session.removeAttribute("action");
             } else {
                 if (request.getParameter("CREATE_BOOKING") != null) {
                     url = "/receptionist/SearchFreeRoom.jsp";
                 } else if (request.getParameter("SELECT_STAFF") != null) {
-
+                    int selectedBookingIndex = Integer.parseInt(request.getParameterValues("selectedBooking")[0]);
+                    List<Booking> bookings = (List<Booking>) session.getAttribute(SESSION_BOOKINGS);
+                    request.setAttribute(SelectStaffServlet.REQUEST_BOOKING, bookings.get(selectedBookingIndex));
+                    
+                    session.setAttribute(SELECTING_STAFF_BOOKING, selectedBookingIndex);
+                    
+                    url = "/SelectStaffServlet";
                 } else if (request.getParameter("CHECKIN") != null) {
-                    String[] indexString = request.getParameterValues("selectedBooking");
-                    System.out.println("test" + indexString[0]);
+                    int selectedBookingIndex = Integer.parseInt(request.getParameterValues("selectedBooking")[0]);
+                    List<Booking> bookings = (List<Booking>) session.getAttribute(SESSION_BOOKINGS);
+                    Booking booking = bookings.get(selectedBookingIndex);
+                    
+                    booking.setIsCheckin(true);
+                    BookingDAO dao = new BookingDAO();
+                    
+                    if(booking.getID() == -1)
+                    {
+                        //Save new booking
+                        dao.addBooking(booking);
+                    }
+                    else 
+                    {
+                        //booking crteate, need update
+                        
+                    }
+                    
+                    
                 } else if (request.getParameter("SEARCH_CUSTOMER") != null) {
                     BookingDAO dao = new BookingDAO();
 
@@ -91,8 +132,6 @@ public class CheckinServlet extends HttpServlet {
 
                     List<Booking> bookings = dao.searchBookingByClient(cusName, cusPhone);
 
-                    System.out.println(bookings.get(0).getListBookedRoom().get(0).getListHiredStaff().size());
-                    
                     request.setAttribute(REQUEST_BOOKINGS, bookings);
                     session.setAttribute(SESSION_BOOKINGS, bookings);
                     session.setAttribute(SESSION_CLIENT, client);

@@ -45,28 +45,28 @@ public class ReceptionistHomeServlet extends HttpServlet {
         System.out.println("action attr" + actionAttr);
         System.out.println("action param" + actionPara);
         
-        
-        User user = new User();
-        user.setID(3);
-        user.setUsername("receptionist");
-        user.setPassword("receptionist");
-        user.setName("receptionist");
-        user.setPhoneNumber("100003");
-        user.setIsActive(true);
-        
-        session.setAttribute("savedUser", user);
+//        
+//        User user = new User();
+//        user.setID(3);
+//        user.setUsername("receptionist");
+//        user.setPassword("receptionist");
+//        user.setName("receptionist");
+//        user.setPhoneNumber("100003");
+//        user.setIsActive(true);
+//        
+//        session.setAttribute("savedUser", user);
 
         try {
 
             //From other jsp
             
-                if (actionAttr.equals("ACTION_CHECKIN")) {
-                    url = "/receptionist/Checkin.jsp";
-                }
-                else 
-                {
-                    
-                }
+//                if (actionAttr.equals("ACTION_CHECKIN")) {
+//                    url = "/receptionist/Checkin.jsp";
+//                }
+//                else 
+//                {
+//                    
+//                }
             
         }
         catch(Exception e)

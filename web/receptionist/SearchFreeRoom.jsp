@@ -77,11 +77,11 @@
             <table>
                 <tr>
                     <td align="right">Check-in:</td>
-                    <td><input type="text" name="checkin" value="2021-10-10 00:00:00"></td>
+                    <td><input type="text" name="checkin" value="2021-11-10 00:00:00"></td>
                 </tr>
                 <tr>
                     <td align="right">Check-out:</td>
-                    <td><input type="text" name="checkout" value="2021-10-10 01:00:00"></td>
+                    <td><input type="text" name="checkout" value="2021-11-10 01:00:00"></td>
                 </tr>
                 <tr>
                 <input type="submit" value="Tim">
