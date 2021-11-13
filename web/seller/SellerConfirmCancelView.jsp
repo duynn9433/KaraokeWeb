@@ -35,6 +35,7 @@
         <table cellspacing="5" cellpadding="5" border="1">
             <tr>
                 <th>ID Phong</th>
+                <th>Ten</th>
                 <th>Co</th>
                 <th>Hang</th>
                 <th>Gia</th>
@@ -45,6 +46,7 @@
             <c:forEach var="j" items="${listDeleteBookedRoom}" >
                 <tr valign="top">
                     <td>${j.room.ID}</td>
+                    <td>${j.room.name}</td>
                     <td>${j.room.size}</td>
                     <td>${j.room.type}</td>
                     <td>${j.room.pricePerHour}</td>
@@ -58,7 +60,7 @@
             <input type="submit" value="Xac nhan"  />
         </form>
         <form action ="<c:url value="/seller/SellerHome.jsp"/>" method="post">
-            <%request.getSession().removeAttribute("listDeleteBookedRoom");%>
+
             <input type="submit" value="Home">
         </form>
     </body>

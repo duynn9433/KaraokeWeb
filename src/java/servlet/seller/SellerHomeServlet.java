@@ -25,11 +25,9 @@ public class SellerHomeServlet extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ServletContext context = getServletContext();
-        String url = "/seller/SellerHome.jsp";
-        User user = new User("username", "password", "name", "possition", "birthday", "address", "mail", "phone number");
-        user.setID(3);
-        HttpSession session = request.getSession();
-        session.setAttribute("user", user);
+        String url = "/index.jsp";
+        request.getSession().removeAttribute("user");
+        request.getSession().invalidate();
         
         context.getRequestDispatcher(url).forward(request, response);
 

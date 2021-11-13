@@ -23,6 +23,7 @@
         <table cellspacing="5" cellpadding="5" border="1">
             <tr>
                 <th>ID</th>
+                <th>Ten</th>
                 <th>Co</th>
                 <th>Hang</th>
                 <th>Gia</th>
@@ -48,6 +49,7 @@
             <c:forEach var="i" items="${booking.listBookedRoom}" varStatus="status">
                 <tr valign="top">
                     <td>${i.room.ID}</td>
+                    <td>${i.room.name}</td>
                     <td>${i.room.size}</td>
                     <td>${i.room.type}</td>
                     <td>${i.room.pricePerHour}</td>

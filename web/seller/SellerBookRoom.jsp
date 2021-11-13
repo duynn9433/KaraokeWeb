@@ -36,6 +36,7 @@
             <table cellspacing="5" cellpadding="5" border="1">
                 <tr>
                     <th>ID</th>
+                    <th>Ten</th>
                     <th>Co</th>
                     <th>Hang</th>
                     <th>Gia</th>
@@ -45,6 +46,7 @@
                 <c:forEach var="i" items="${listRoom}" varStatus="status">
                     <tr valign="top">
                         <td>${i.ID}</td>
+                        <td>${i.name}</td>
                         <td>${i.size}</td>
                         <td>${i.type}</td>
                         <td>${i.pricePerHour}</td>

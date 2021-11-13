@@ -62,9 +62,11 @@ public class SellerConfirmBookingServlet extends HttpServlet {
             booking.setBookDate(LocalDateTime.now());
             booking.setUser(user);
             booking.setNote(note);
+            booking.setSaleOff(Float.parseFloat(request.getParameter("saleOff")));
             try {
                 bookingDAO.addBooking(booking);
                 msg="Luu thanh cong";
+                request.getSession().removeAttribute("booking");
             } catch (SQLException ex) {
                 msg="Luu that bai";
                 Logger.getLogger(SellerConfirmBookingServlet.class.getName()).log(Level.SEVERE, null, ex);
