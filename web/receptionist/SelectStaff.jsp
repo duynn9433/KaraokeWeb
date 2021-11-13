@@ -14,24 +14,24 @@
     </head>
     <body>
         <form action="<c:url value="/SelectStaffServlet" />" method="post">
-            
+
             <table cellspacing="5" cellpadding="5" border="1">
                 <tr>
                     <th>Id Phòng</th>
                     <th>Nhân viên 1</th>
                     <th>Nhân viên 2</th>
                 </tr>
-                    <c:forEach var="bookedRoom" items="${booking.listBookedRoom}" varStatus="statusBookedRoom">
-                        <tr valign="top">
-                            <td>${bookedRoom.room.ID}</td>
-                            <td>${bookedRoom.listHiredStaff[0].user.name}</td>
-                            <td>${bookedRoom.listHiredStaff[1].user.name}</td>
+                <c:forEach var="bookedRoom" items="${booking.listBookedRoom}" varStatus="statusBookedRoom">
+                    <tr valign="top">
+                        <td>${bookedRoom.room.ID}</td>
+                        <td>${bookedRoom.listHiredStaff[0].user.name}</td>
+                        <td>${bookedRoom.listHiredStaff[1].user.name}</td>
 
-                            <td><input type="checkbox" name="selectedBooked" value="<c:out value = "${statusBookedRoom.index}"/>"></td>
-                        </tr>
-                    </c:forEach>
+                        <td><input type="checkbox" name="selectedBooked" value="<c:out value = "${statusBookedRoom.index}"/>"></td>
+                    </tr>
+                </c:forEach>
             </table>
-            
+
             <table cellspacing="5" cellpadding="5" border="1">
                 <tr>
                     <th>Tên nhân viên</th>
@@ -46,8 +46,8 @@
                     </tr>
                 </c:forEach>
             </table>
-            
-            
+
+
             <input type="submit" value="Chọn" name="select_staff" />
             <input type="submit" value="Xong" name="select_done" />
         </form>

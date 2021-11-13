@@ -30,25 +30,19 @@ import model.User;
  */
 @WebServlet(name = "CheckinServlet", urlPatterns = {"/CheckinServlet"})
 public class CheckinServlet extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    static String SESSION_BOOKINGS = "checkinServlet_sessionBookings";
-    static String SESSION_CLIENT = "sessionClient";
-    static String REQUEST_BOOKINGS = "requestBookings";
     
-    static String SELECTING_STAFF_BOOKING = "SELECTING_STAFF_BOOKING";
+    private static String SESSION_BOOKINGS = "checkinServlet_sessionBookings";
+    private static String SESSION_CLIENT = "sessionClient";
+    private static String REQUEST_BOOKINGS = "requestBookings";
+    
+    private static String SELECTING_STAFF_BOOKING = "SELECTING_STAFF_BOOKING";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        System.out.println("Checkin");
+        
         ServletContext context = getServletContext();
         HttpSession session = request.getSession(false);
         String url = "/receptionist/Checkin.jsp";
@@ -58,7 +52,6 @@ public class CheckinServlet extends HttpServlet {
             if (actionAttr != null) {
                 if (actionAttr.equals("ADD_BOOKING")) {
                     Booking b = (Booking) session.getAttribute("booking");
-                    System.out.println("booked:" + b.getListBookedRoom().size());
 
                     List<Booking> bookings = (List<Booking>) session.getAttribute(SESSION_BOOKINGS);
 
@@ -91,7 +84,7 @@ public class CheckinServlet extends HttpServlet {
                 session.removeAttribute("action");
             } else {
                 if (request.getParameter("CREATE_BOOKING") != null) {
-                    url = "/receptionist/SearchFreeRoom.jsp";
+                    url = "/receptionist/CreateBooking.jsp";
                 } else if (request.getParameter("SELECT_STAFF") != null) {
                     int selectedBookingIndex = Integer.parseInt(request.getParameterValues("selectedBooking")[0]);
                     List<Booking> bookings = (List<Booking>) session.getAttribute(SESSION_BOOKINGS);
@@ -116,7 +109,7 @@ public class CheckinServlet extends HttpServlet {
                     else 
                     {
                         //booking crteate, need update
-                        
+                        dao.checkinBooking(booking);
                     }
                     
                     
@@ -142,126 +135,7 @@ public class CheckinServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        System.out.println("Checkin foward: " + url);
         context.getRequestDispatcher(url).forward(request, response);
-
-//        String url = "/receptionist/Checkin.jsp";
-//
-//        String actionAttr = (String) session.getAttribute("action");
-//        String actionPara = (String) request.getParameter("action");
-//        System.out.println("action attr" + actionAttr);
-//        System.out.println("action param" + actionPara);
-//
-//        try {
-//
-//            //From other jsp
-//            if (actionAttr != null) {
-//                if (actionAttr.equals("ADD_BOOKING")) {
-//                    Booking b = (Booking) session.getAttribute("booking");
-//                    System.out.println("booked:" + b.getListBookedRoom().size());
-//
-//                    List<Booking> bookings = new ArrayList<Booking>();
-//                    bookings.add(b);
-//
-//                    request.setAttribute("bookings", bookings);
-//                    url = "/receptionist/Checkin.jsp";
-//
-//                    session.setAttribute("savedBookings", bookings);
-//                    //session.removeAttribute(url);
-//                } else if (actionAttr.equals("RETURN_STAFF")) {
-//
-//                    System.out.println("staff" + ((List) session.getAttribute("return_staff")).size());
-//                    
-//                    
-//                    int bookedRoomIndex = Integer.parseInt((String) session.getAttribute("savedBookedRoomIndex"));
-//                    
-//                    List<BookedRoom> allBookedRooms = new ArrayList<>();
-//                    
-//                    List<Booking> bookings = (List<Booking>) session.getAttribute("savedBookings");
-//                    
-//                    for(Booking b : bookings)
-//                        allBookedRooms.addAll(b.getListBookedRoom());
-//                    
-//                    List<BookedStaff> bookedStaffs = new ArrayList<>();
-//                    
-//                    List<User> staffs = (List) session.getAttribute("return_staff");
-//                    for(User u: staffs)
-//                    {
-//                        BookedStaff bs = new BookedStaff();
-//                        
-//                        bs.setRating(0);
-//                        bs.setUser(u);
-//                        
-//                        bookedStaffs.add(bs);
-//                    }
-//                        
-//                    
-//                    allBookedRooms.get(bookedRoomIndex).setListHiredStaff(bookedStaffs);
-//                    
-//                    request.setAttribute("bookings", bookings);
-//
-//                    session.removeAttribute("return_staff");
-//                }
-//
-//                session.removeAttribute("action");
-//
-//            } //From params
-//            else {
-//                if (actionPara.equals("SEARCH_CUSTOMER")) {
-//
-//                    BookingDAO dao = new BookingDAO();
-//                    
-//                    String cusName = request.getParameter("customer_name");
-//                    String cusPhone = request.getParameter("customer_phone");
-//                    
-//                    ClientDAO clientDAO = new ClientDAO();
-//                    
-//                    Client client = clientDAO.searchClient(cusName, cusPhone).get(0);
-//                
-//
-//                    List<Booking> bookings = dao.searchBookingByClient(cusName, cusPhone);
-//
-//                    request.setAttribute("bookings", bookings);
-//                    session.setAttribute("savedBookings", bookings);
-//                    session.setAttribute("savedClient", client);
-//                    
-//
-//                } else if (actionPara.equals("ADD_BOOKING")) {
-//                    url = "/receptionist/SearchFreeRoom.jsp";
-//                } else if (actionPara.equals("SELECT_STAFF")) {
-//                    url = "/SelectStaffServlet";
-//
-//                    String[] indexString = request.getParameterValues("selectedBooked");
-//                    System.out.println("test" + indexString[0]);
-//         
-//                    session.setAttribute("savedBookedRoomIndex", indexString[0]);
-//                }
-//                else if(actionPara.equals("SAVE_BOOKING"))
-//                {
-//                    Client client = (Client) session.getAttribute("savedClient");
-//                    
-//                     List<Booking> bookings = (List<Booking>) session.getAttribute("savedBookings");
-//                     BookingDAO dao = new BookingDAO();
-//                     
-//                     User user = (User) session.getAttribute("user");
-//                 
-//                     bookings.get(0).setClient(client);
-//                     bookings.get(0).setUser(user);
-//                     
-//                     
-//                     for(BookedRoom bkr : bookings.get(0).getListBookedRoom())
-//                         bkr.setIsCheckin(true);
-//                     
-//                     dao.addBooking(bookings.get(0));
-//                }
-//
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        System.out.println("Checkin foward: " + url);
-//        context.getRequestDispatcher(url).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

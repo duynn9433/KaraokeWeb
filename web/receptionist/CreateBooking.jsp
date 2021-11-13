@@ -71,7 +71,7 @@
     </head>
     <body>
         <h1>Dat phong</h1>
-        <form action="<c:url value="/SearchFreeRoomServlet" />" method="post">
+        <form action="<c:url value="/CreateBookingServlet" />" method="post">
             <input type="hidden" name="action"  value ="searchFreeRoom">
             <!--<input type="hidden" name="user" value="${user}">-->
             <table>
@@ -88,7 +88,7 @@
                 </tr>
             </table>
         </form>
-        <form action="<c:url value="/SearchFreeRoomServlet" />" method="post">
+        <form action="<c:url value="/CreateBookingServlet" />" method="post">
             <input type="hidden" name="action"  value ="bookRoom">
             <table cellspacing="5" cellpadding="5" border="1">
                 <tr>

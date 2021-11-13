@@ -32,8 +32,8 @@ import servlet.seller.SellerBookRoomServlet;
  *
  * @author xxxx9
  */
-@WebServlet(name = "SearchFreeRoomServlet", urlPatterns = {"/SearchFreeRoomServlet"})
-public class SearchFreeRoomServlet extends HttpServlet {
+@WebServlet(name = "CreateBookingServlet", urlPatterns = {"/CreateBookingServlet"})
+public class CreateBookingServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,7 +50,7 @@ public class SearchFreeRoomServlet extends HttpServlet {
 
 
         ServletContext context = getServletContext();
-        String url = "/receptionist/SearchFreeRoom.jsp";
+        String url = "/receptionist/CreateBooking.jsp";
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 //        System.out.println("------------");

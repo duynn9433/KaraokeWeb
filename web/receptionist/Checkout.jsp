@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,43 +14,42 @@
         <title>Cehckout</title>
     </head>
     <body>
-         <form action="<c:url value="/CheckinFrmServlet"/>" method="POST">
-            <input type="hidden" name="action" value="SEARCH_CUSTOMER"/>
+         <form action="<c:url value="/CheckoutServlet"/>" method="POST">
             <span>
                 <label for="customer_name">Tìm khách hàng: </label>
-                <input type="text" name="customer_name" id="customer_name"/>
-                <input type="text" name="customer_phone" id="customer_phone"/>
-                <input type="submit" value="Tìm kiếm" />
+                <input type="text" name="customer_name" id="customer_name" value="Nguyen A"/>
+                <input type="text" name="customer_phone" id="customer_phone" value="2000001"/>
+                <input type="submit" name="SEARCH_CUSTOMER" value="Tìm kiếm" />
             </span>
         </form>
 
         <br>
 
-        <h2>Danh sách phòng: </h2>
+        <h2>Danh sách Booking: </h2>
 
+        <form action="<c:url value="/CheckoutServlet"/>" method="POST">
+            <c:forEach var="booking" items="${listBookings}" varStatus="statusBooking">
+                <h3>Booking ${booking.ID}</h3>
+                <input type="checkbox" name="selectedBooking" value="<c:out value="${statusBooking.index}"/>">
 
-
-
-        <table cellspacing="5" cellpadding="5" border="1">
-            <tr>
-                <th>Tên khách</th>
-                <th>Mã phòng</th>
-                <th>Thời gian checkin</th>
-            </tr>
-
-
-
-            <c:forEach var="booking" items="${bookings}" varStatus="statusBooking">
-                <c:forEach var="bookedRoom" items="${booking.listBookedRoom}" varStatus="statusBooked">
-                    <tr valign="top">
-                        <td>${booking.client.name}</td>
-                        <td>${bookedRoom.room.ID}</td>
-                        <td><tags:ldt date="${booking.bookDate}" pattern="dd/MM/yyyy"/></td>
-                        <td><input type="checkbox" name="selectedBookedRoom" value="<c:out value="${9}"/>"></td>
+                <table cellspacing="5" cellpadding="5" border="1">
+                    <tr>
+                        <th>Mã phòng</th>
+                        <th>Thời gian đặt trước</th>
                     </tr>
-                </c:forEach>
+
+                    <c:forEach var="bookedRoom" items="${booking.listBookedRoom}" varStatus="statusBooked">
+                        <tr valign="top">
+                            <td>${bookedRoom.room.ID}</td>
+                            <td><tags:ldt date="${booking.bookDate}" pattern="dd/MM/yyyy"/></td>
+                        </tr>
+                    </c:forEach>
+
+                </table>
             </c:forEach>
 
-        </table>
+            <input type="submit" name="ADD_SERVICES" value="Thêm dịch vụ">
+            <input type="submit" name="PAYMENT" value="Thanh toán">
+        </form>
     </body>
 </html>
