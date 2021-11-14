@@ -15,7 +15,11 @@
     <body>
         <table>
             <tr>
-                <td><button onclick="location.href = 'index.html'">Logout</button></td>
+                <td>
+                    <form action="<c:url value="/ManagerHomeServlet"/>" method="post">
+                        <input type="submit" value="Log out">
+                    </form>
+                </td>
                 <td>Logged in as: ${user.name}</td>
             </tr>
         </table>
