@@ -18,17 +18,17 @@ and open the template in the editor.
             <table>
                 <tr>
                     <td>Username:</td>
-                    <td><input type="text" name="username" value="manager"></td>
+                    <td><input type="text" name="username" value="receptionist"></td>
                 </tr>
                 <tr>
                     <td>Password:</td>
-                    <td><input type="password" name="password" value="manager"></td>
+                    <td><input type="password" name="password" value="receptionist"></td>
                 </tr>
             </table>
-        <input type="submit" value ='Dang nhap'>
-        
+            <input type="submit" value ='Dang nhap'>
+
 <!--        <form action="<c:url value="/sellerHomeServlet" />" method ="post">
-        <input type="submit" value ='Dang nhap Seller'>-->
-    </form>
-</body>
+<input type="submit" value ='Dang nhap Seller'>-->
+        </form>
+    </body>
 </html>

@@ -10,8 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import model.BookedRoom;
+import model.Booking;
 import model.Client;
 import model.Service;
+import model.UsedService;
 
 /**
  *
@@ -44,6 +47,43 @@ public class ServiceDao extends DAO {
         }
 
         return res;
+    }
+
+    public void addUsedService(Booking booking) throws SQLException {
+        con.setAutoCommit(false);
+
+        String sql = "INSERT INTO tblusedservice (amount, pricePerUnit, note, tblserviceID, tblbookedroomID) VALUES (?,?,?,?,?)";
+        PreparedStatement ps;
+        ps = con.prepareStatement(sql);
+
+        for (BookedRoom bookedRoom : booking.getListBookedRoom()) {
+            for (UsedService us : bookedRoom.getListUsedService()) {
+
+                PreparedStatement ps1 = con.prepareStatement("SELECT COUNT(ID) from tblusedservice where ID=?");
+                ps1.setInt(1, us.getID());
+                ResultSet rs1 = ps1.executeQuery();
+                rs1.next();
+                int count = rs1.getInt(1);
+
+                if (count == 0) {
+                    ps.setInt(1, us.getAmount());
+                    ps.setFloat(2, us.getPricePerUnit());
+                    ps.setString(3, us.getNote());
+                    ps.setInt(4, us.getService().getID());
+                    ps.setInt(5, bookedRoom.getID());
+
+                    ps.executeUpdate();
+                }
+                else 
+                {
+                    //update here
+                }
+
+            }
+        }
+
+        con.commit();
+        con.setAutoCommit(true);
     }
 
 }

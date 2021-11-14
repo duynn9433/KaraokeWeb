@@ -6,6 +6,7 @@ package servlet.receptionist;
 
 import DAO.BookingDAO;
 import DAO.ClientDAO;
+import DAO.ServiceDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -19,17 +20,17 @@ import javax.servlet.http.HttpSession;
 import model.Booking;
 import model.Client;
 
-
 /**
  *
  * @author xxxx9
  */
 @WebServlet(name = "CheckoutServlet", urlPatterns = {"/CheckoutServlet"})
 public class CheckoutServlet extends HttpServlet {
+
     private static String SESSION_BOOKINGS = "checkoutServlet_sessionBookings";
     private static String SESSION_CLIENT = "sessionClient";
     private static String REQUEST_BOOKINGS = "listBookings";
-    
+
     private static String SELECTING_BOOKING = "SELECTING_BOOKING";
 
     private static String JSP_URL = "/receptionist/Checkout.jsp";
@@ -44,18 +45,58 @@ public class CheckoutServlet extends HttpServlet {
 
         try {
             if (actionAttr != null) {
+                if (actionAttr.equals("RETURN_SERVICES")) {
 
+                    List<Booking> bookings = (List<Booking>) session.getAttribute(SESSION_BOOKINGS);
+                    int seletingBooking = (int) session.getAttribute(SELECTING_BOOKING);
+
+                    Booking booking = (Booking) request.getAttribute(AddServicesServlet.RETURN_BOOKING);
+
+                    bookings.set(seletingBooking, booking);
+
+                    request.setAttribute(REQUEST_BOOKINGS, bookings);
+                }
+
+                session.removeAttribute("action");
             } else {
                 if (request.getParameter("ADD_SERVICES") != null) {
                     int selectedBookingIndex = Integer.parseInt(request.getParameterValues("selectedBooking")[0]);
                     List<Booking> bookings = (List<Booking>) session.getAttribute(SESSION_BOOKINGS);
                     request.setAttribute(AddServicesServlet.REQUEST_BOOKING, bookings.get(selectedBookingIndex));
-                    
+
                     session.setAttribute(SELECTING_BOOKING, selectedBookingIndex);
-                    
-                    url = "/AddServicesServlet";   
+
+                    url = "/AddServicesServlet";
                 } else if (request.getParameter("SEARCH_CUSTOMER") != null) {
-                    url = searchBooking(request, response);
+
+                    BookingDAO dao = new BookingDAO();
+
+                    String cusName = request.getParameter("customer_name");
+                    String cusPhone = request.getParameter("customer_phone");
+
+                    ClientDAO clientDAO = new ClientDAO();
+
+                    Client client = clientDAO.searchClient(cusName, cusPhone).get(0);
+
+                    List<Booking> bookings = dao.getUncheckoutBooking(cusName, cusPhone);
+
+                    request.setAttribute(REQUEST_BOOKINGS, bookings);
+                    session.setAttribute(SESSION_BOOKINGS, bookings);
+                    session.setAttribute(SESSION_CLIENT, client);
+
+                    url = JSP_URL;
+                } else if (request.getParameter("PAYMENT") != null) {
+                    ServiceDao dao = new ServiceDao();
+                    
+                    int selectedBookingIndex = Integer.parseInt(request.getParameterValues("selectedBooking")[0]);
+                    List<Booking> bookings = (List<Booking>) session.getAttribute(SESSION_BOOKINGS);
+                    Booking booking = bookings.get(0);
+                    
+                    dao.addUsedService(booking);
+                    
+                    request.setAttribute(PaymentServlet.REQUEST_BOOKING, booking);
+                    
+                    url="/PaymentServlet";
                 }
             }
         } catch (Exception e) {
@@ -63,29 +104,6 @@ public class CheckoutServlet extends HttpServlet {
         }
 
         context.getRequestDispatcher(url).forward(request, response);
-    }
-
-    
-
-    private String searchBooking(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        HttpSession session = request.getSession(false);
-
-        BookingDAO dao = new BookingDAO();
-
-        String cusName = request.getParameter("customer_name");
-        String cusPhone = request.getParameter("customer_phone");
-
-        ClientDAO clientDAO = new ClientDAO();
-
-        Client client = clientDAO.searchClient(cusName, cusPhone).get(0);
-
-        List<Booking> bookings = dao.getUncheckoutBooking(cusName, cusPhone);
-
-        request.setAttribute(REQUEST_BOOKINGS, bookings);
-        session.setAttribute(SESSION_BOOKINGS, bookings);
-        session.setAttribute(SESSION_CLIENT, client);
-
-        return JSP_URL;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

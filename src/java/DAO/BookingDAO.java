@@ -193,6 +193,9 @@ public class BookingDAO extends DAO {
      */
     public void addBooking(Booking booking) throws SQLException {
         //set id
+
+        con.setAutoCommit(false);
+
         int bookingMaxID;
         int bookedMaxID;
         PreparedStatement psinit = null;
@@ -245,7 +248,7 @@ public class BookingDAO extends DAO {
             ps1.setInt(7, i.getRoom().getID());
             ps1.executeUpdate();
 
-            if (i.getListHiredStaff()!=null) {
+            if (i.getListHiredStaff() != null) {
                 for (BookedStaff staff : i.getListHiredStaff()) {
                     PreparedStatement ps2 = con.prepareStatement(sqlBookedStaff);
                     ps2.setInt(1, staff.getRating());
@@ -257,33 +260,34 @@ public class BookingDAO extends DAO {
 
         }
 
+        con.commit();
+        con.setAutoCommit(true);
+
     }
-    
-    public void checkinBooking(Booking booking) throws SQLException
-    {
+
+    public void checkinBooking(Booking booking) throws SQLException {
         con.setAutoCommit(false);
-        
+
         String sqlCheckinBooking = "UPDATE tblbooking set isCheckin=? WHERE ID=?";
         String sqlInsertStaff = "INSERT INTO tblbookedstaff (rating, tbluserID, tblbookedroomid) VALUES (?,?,?)";
-        
+
         PreparedStatement ps = con.prepareStatement(sqlCheckinBooking);
         ps.setBoolean(1, true);
         ps.setInt(2, booking.getID());
         ps.executeUpdate();
-        
+
         PreparedStatement ps1 = con.prepareStatement(sqlInsertStaff);
-        
+
         for (BookedRoom br : booking.getListBookedRoom()) {
-            for(BookedStaff staff : br.getListHiredStaff())
-            {
+            for (BookedStaff staff : br.getListHiredStaff()) {
                 ps1.setInt(1, staff.getRating());
                 ps1.setInt(2, staff.getUser().getID());
                 ps1.setInt(3, br.getID());
-                
+
                 ps1.executeUpdate();
             }
         }
-        
+
         con.commit();
         con.setAutoCommit(true);
     }
@@ -416,8 +420,7 @@ public class BookingDAO extends DAO {
 
         return res;
     }
-    
-    
+
     public List<Booking> getUncheckoutBooking(String clientName, String clientPhoneNumber) throws SQLException {
         List<Booking> res = new ArrayList<>();
         String sqlBooking = "{call getBookingByClient(?,?)}";
@@ -426,6 +429,7 @@ public class BookingDAO extends DAO {
         String sqlBookedRoom = "{call getBookedRoomByBooking(?)}";
         String sqlRoom = "{call getRoomByBookedRoom(?)}";
         String sqlBookedStaff = "{call getStaffByBookedRoom(?)}";
+        String sqlUsedSerivces = "SELECT * FROM tblusedservice WHERE tblbookedroomID=?";
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -509,7 +513,7 @@ public class BookingDAO extends DAO {
                     BookedStaff bookedStaff = new BookedStaff();
                     bookedStaff.setID(rs5.getInt("ID"));
                     bookedStaff.setRating(rs5.getInt("rating"));
-                   
+
                     int staffId = rs5.getInt("tbluserID");
 
                     User staff = new User();
@@ -523,18 +527,50 @@ public class BookingDAO extends DAO {
                     staff.setPosition(rs6.getString("position"));
                     staff.setName(rs6.getString("name"));
                     staff.setPhoneNumber(rs6.getString("phoneNumber"));
-                    
+
                     bookedStaff.setUser(staff);
-                    
+
                     staffs.add(bookedStaff);
                 }
                 br.setListHiredStaff(staffs);
+
+                //Used service
+                List<UsedService> usedServices = new ArrayList<>();
+                PreparedStatement ps6 = con.prepareStatement(sqlUsedSerivces);
+                ps6.setInt(1, br.getID());
+                ResultSet rs6 = ps6.executeQuery();
+
+                while (rs6.next()) {
+                    UsedService usedService = new UsedService();
+                    usedService.setID(rs6.getInt("ID"));
+                    usedService.setAmount(rs6.getInt("amount"));
+                    usedService.setPricePerUnit(rs6.getFloat("pricePerUnit"));
+                    usedService.setNote(rs6.getString("note"));
+
+                    int serviceId = rs6.getInt("tblserviceID");
+
+                    PreparedStatement ps7 = con.prepareStatement("SELECT * FROM tblservice WHERE ID=?");
+                    ps7.setInt(1, serviceId);
+                    ResultSet rs7 = ps7.executeQuery();
+                    rs7.next();
+                    
+                    Service service = new Service();                   
+                    service.setID(rs7.getInt("ID"));
+                    service.setName(rs7.getString("name"));
+                    service.setUnity(rs7.getString("unity"));
+                    service.setPricePerUnit(rs7.getFloat("pricePerUnit"));
+                    service.setDescription(rs7.getString("description"));
+                    
+                    usedService.setService(service);
+                    
+                    usedServices.add(usedService);
+                }
+                br.setListUsedService(usedServices);
 
                 listBookedRoom.add(br);
             }
             b.setListBookedRoom(listBookedRoom);
 
-            
             if ((b.isIsCheckin()) && (!b.isIsCheckout())) {
                 res.add(b);
             }

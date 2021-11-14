@@ -196,6 +196,31 @@ public class BillDAO extends DAO {
 
         return res;
     }
+    
+    public void addBill(Bill bill) throws SQLException
+    {
+        con.setAutoCommit(false);
+        
+        String sql = "INSERT INTO tblbill (paymentDate, paymentType, note, tbluserID, tblbookingID) VALUES (?,?,?,?,?)";
+        PreparedStatement ps;
+        ps = con.prepareStatement(sql);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        ps.setString(1, dtf.format(bill.getPaymentDate()));
+        ps.setString(2, bill.getPaymentType());
+        ps.setString(3, bill.getNote());
+        ps.setInt(4, bill.getUser().getID());
+        ps.setInt(5, bill.getBooking().getID());
+        
+        ps.executeUpdate();
+        
+        PreparedStatement ps1 = con.prepareStatement("UPDATE tblbooking SET ischeckout=1 WHERE ID =?");
+        ps1.setInt(1, bill.getBooking().getID());
+        ps1.executeUpdate();
+        
+        con.commit();
+        con.setAutoCommit(true);
+    }
+    
     public static void main(String[] args) {
         IncomeStat is = new IncomeStat(1200, "12/2020");
         BillDAO bd = new BillDAO();
