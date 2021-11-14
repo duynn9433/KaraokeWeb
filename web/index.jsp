@@ -18,11 +18,11 @@ and open the template in the editor.
             <table>
                 <tr>
                     <td>Username:</td>
-                    <td><input type="text" name="username" value="seller"></td>
+                    <td><input type="text" name="username" value="manager"></td>
                 </tr>
                 <tr>
                     <td>Password:</td>
-                    <td><input type="password" name="password" value="seller"></td>
+                    <td><input type="password" name="password" value="manager"></td>
                 </tr>
             </table>
         <input type="submit" value ='Dang nhap'>
