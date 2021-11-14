@@ -5,10 +5,15 @@
  */
 package servlet.manager;
 
-import DAO.ClientDAO;
-import DAO.KaraokeBarDAO;
+import DAO.IncomeStatDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,17 +21,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Booking;
-import model.Client;
-import model.KaraokeBar;
-import model.User;
+import model.IncomeStat;
 
 /**
  *
  * @author duynn
  */
-@WebServlet(name = "AddInfoKaraServlet", urlPatterns = {"/AddInfoKaraServlet"})
-public class AddInfoKaraServlet extends HttpServlet {
+@WebServlet(name = "IncomeStatServlet", urlPatterns = {"/IncomeStatServlet"})
+public class IncomeStatServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,31 +44,34 @@ public class AddInfoKaraServlet extends HttpServlet {
         ServletContext context = getServletContext();
         String url = "/index.jsp";
         HttpSession session = request.getSession();
-
-        KaraokeBar karaoke = null;
-        KaraokeBarDAO karaokeBarDAO = new KaraokeBarDAO();
+        
         String msg = null;
+        List<IncomeStat> listIncomeStat = null;
+        IncomeStatDAO incomeStatDAO = new IncomeStatDAO();
         
         String action = request.getParameter("action");
         System.out.println("action " + action);
-        if (action.equals("them")) {
-            String name = request.getParameter("name");
-            String address = request.getParameter("address");
-            String des = request.getParameter("des");
-            karaoke = new KaraokeBar(0, name, address, des);
-            
-            try{
-                karaokeBarDAO.addInfoKara(karaoke);
-                msg="Them thanh cong";
-                url="/manager/AddInforKara.jsp";
-            }catch(Exception e){
-                e.printStackTrace();
-                msg="Them that bai";
-                url="/manager/AddInforKara.jsp";
+        if (action.equals("thongKe")) {
+            String sdString = request.getParameter("startDate");
+            String edString = request.getParameter("endDate");
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            LocalDateTime sd = LocalDateTime.parse(sdString + " 00:00:00", dtf);
+            LocalDateTime ed = LocalDateTime.parse(edString + " 23:59:59", dtf);
+            try {
+                listIncomeStat = incomeStatDAO.getIncomeStat(sd, ed);
+                request.setAttribute("listIncomeStat", listIncomeStat);
+                url = "/manager/IncomeStatView.jsp";
+            } catch (SQLException ex) {
+                Logger.getLogger(IncomeStatServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }else if(action.equals("chiTiet")){
+            IncomeStat incomeStat = new IncomeStat(Float.parseFloat(request.getParameter("income")), 
+                    request.getParameter("thang"));
+            session.setAttribute("incomeStat", incomeStat);
+            //url="/manager/IncomeDetailView.jsp";
+            url="/IncomeDetailServlet";
         }
-        request.getSession().setAttribute("addKaraMsg", msg);
-        request.getRequestDispatcher(url).forward(request, response);
+        context.getRequestDispatcher(url).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

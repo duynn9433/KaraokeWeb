@@ -15,31 +15,31 @@ import java.util.List;
  *
  * @author duynn
  */
-public class Bill implements Serializable{
+public class Bill implements Serializable {
+
     private int ID;
     private LocalDate paymentDate;
     private float paymentAmount;
     private String paymentType;
     private String note;
-    private List<BookedRoom> listBookedRoom; 
     private User user;
-    private Client client;
+    private Booking booking;
 
     public Bill() {
         super();
     }
 
-    public Bill(LocalDate paymentDate, float paymentAmount, String paymentType, 
-            String note, ArrayList<BookedRoom> listBookedRoom, User user, 
-            Client client) {
-        super();
-        this.paymentDate = paymentDate;
-        this.paymentAmount = paymentAmount;
-        this.paymentType = paymentType;
-        this.note = note;
-        this.listBookedRoom = listBookedRoom;
-        this.user = user;
-        this.client = client;
+    @Override
+    public String toString() {
+        return "Bill{" + "ID=" + ID + ", paymentDate=" + paymentDate + ", paymentAmount=" + paymentAmount + ", paymentType=" + paymentType + ", note=" + note + ", user=" + user + ", booking=" + booking + '}';
+    }
+
+    public Booking getBooking() {
+        return booking;
+    }
+
+    public void setBooking(Booking booking) {
+        this.booking = booking;
     }
 
     public int getID() {
@@ -82,14 +82,6 @@ public class Bill implements Serializable{
         this.note = note;
     }
 
-    public List<BookedRoom> getListBookedRoom() {
-        return listBookedRoom;
-    }
-
-    public void setListBookedRoom(ArrayList<BookedRoom> listBookedRoom) {
-        this.listBookedRoom = listBookedRoom;
-    }
-
     public User getUser() {
         return user;
     }
@@ -98,39 +90,4 @@ public class Bill implements Serializable{
         this.user = user;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    @Override
-    public String toString() {
-        return "Bill{" + "ID=" + ID + ", paymentDate=" + paymentDate + 
-                ", paymentAmount=" + paymentAmount + ", paymentType=" + paymentType 
-                + ", note=" + note + ", listBookedRoom=" + listBookedRoom 
-                + ", user=" + user + ", client=" + client + '}';
-    }
-    
-    
-    
-    public Object[] toObject(int stt, int indexBookedRoom){
-        int i = indexBookedRoom;
-        BookedRoom br = listBookedRoom.get(indexBookedRoom);
-        
-        LocalDateTime sd = br.getCheckout();
-        LocalDateTime ed = br.getCheckin();
-        
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        
-        return new Object[]{
-            stt, this.ID , this.client.getName(),
-            dtf.format(br.getCheckin()),dtf.format(br.getCheckout()),
-            //paymentAmount
-            br.getTotalPrice()
-        };
-    }
-    
 }

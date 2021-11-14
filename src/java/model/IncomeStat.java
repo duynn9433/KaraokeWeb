@@ -17,21 +17,16 @@ import java.util.Comparator;
  */
 public class IncomeStat implements Serializable{
     private float income ;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private String mode;
+    private String thang;
     
     public IncomeStat() {
         super();
         income = 0;
-        mode ="Thang";
     }
 
-    public IncomeStat(float income, LocalDateTime startDate, LocalDateTime endDate, String mode ) {
+    public IncomeStat(float income, String thang) {
         this.income = income;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.mode = mode;
+        this.thang = thang;
     }
 
     public float getIncome() {
@@ -42,49 +37,17 @@ public class IncomeStat implements Serializable{
         this.income = income;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
+    public String getThang() {
+        return thang;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getMode() {
-        return mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
+    public void setThang(String thang) {
+        this.thang = thang;
     }
 
     @Override
     public String toString() {
-        return "IncomeStat{" + "income=" + income + ", startDate=" + startDate + ", endDate=" + endDate + ", mode=" + mode + '}';
+        return "IncomeStat{" + "income=" + income + ", thang=" + thang + '}';
     }
     
-    public Object[] toObject(int stt){
-        String tenThang = startDate.getMonthValue() + "/" + startDate.getYear();
-        return new Object[]{
-            stt, tenThang, income
-        };
-    }
-    public static Comparator<IncomeStat> MonthComp = new Comparator<IncomeStat>() {
-        @Override
-        public int compare(IncomeStat o1, IncomeStat o2) {
-            int t = o1.getStartDate().getYear() - o2.getStartDate().getYear();
-            if(t==0)
-                return o1.getStartDate().getMonthValue() - o2.getStartDate().getMonthValue();
-            else
-                return t;
-        };
-    };
 }
