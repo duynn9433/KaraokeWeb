@@ -4,7 +4,7 @@
  */
 package servlet.receptionist;
 
-import DAO.ServiceDao;
+import DAO.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -109,7 +109,7 @@ public class AddServicesServlet extends HttpServlet {
 
                 url = "/CheckoutServlet";
             } else if (request.getParameter("SEARCH_SERVICE") != null) {
-                ServiceDao dao = new ServiceDao();
+                ServiceDAO dao = new ServiceDAO();
                 String name = request.getParameter("service_name");
                 List<Service> services = dao.findService(name);
 
