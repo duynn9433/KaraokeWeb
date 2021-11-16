@@ -221,16 +221,16 @@ public class BillDAO extends DAO {
         con.setAutoCommit(true);
     }
     
-    public static void main(String[] args) {
-        IncomeStat is = new IncomeStat(1200, "12/2020");
-        BillDAO bd = new BillDAO();
-        List<Bill> l;
-        try {
-            l = bd.getBill(is);
-            for(Bill b: l) System.out.println(b.toString());
-        } catch (SQLException ex) {
-            Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
+//    public static void main(String[] args) {
+//        IncomeStat is = new IncomeStat(1200, "12/2020");
+//        BillDAO bd = new BillDAO();
+//        List<Bill> l;
+//        try {
+//            l = bd.getBill(is);
+//            for(Bill b: l) System.out.println(b.toString());
+//        } catch (SQLException ex) {
+//            Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
+//    }
 }
