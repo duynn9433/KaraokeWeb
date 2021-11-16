@@ -20,9 +20,9 @@ import model.UsedService;
  *
  * @author xxxx9
  */
-public class ServiceDao extends DAO {
+public class ServiceDAO extends DAO {
 
-    public ServiceDao() {
+    public ServiceDAO() {
         super();
     }
 
@@ -85,7 +85,8 @@ public class ServiceDao extends DAO {
         con.commit();
         con.setAutoCommit(true);
     }
- public void addService(Service s)throws SQLException{
+
+    public void addService(Service s)throws SQLException{
         int maxID;
         PreparedStatement psinit = null;
         ResultSet rsinit = null;
