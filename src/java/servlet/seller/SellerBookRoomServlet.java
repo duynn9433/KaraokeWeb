@@ -109,7 +109,7 @@ public class SellerBookRoomServlet extends HttpServlet {
                 br.setCheckout(checkout);
                 br.setRoom(listRoom.get(index));
                 br.setPricePerHour(br.getRoom().getPricePerHour());
-                br.setAmount(checkout.getHour() - checkin.getHour()); //****************************************
+                br.setAmount(Math.round((checkout.getHour() - checkin.getHour())*2)/2); 
                 br.setTotalPrice(br.getAmount() * br.getPricePerHour());
 
                 //br.setID(i);

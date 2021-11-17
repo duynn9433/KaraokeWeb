@@ -22,6 +22,7 @@
         <table cellspacing="5" cellpadding="5" border="1">
             <tr>
                 <th>ID</th>
+                <th>Payment Amount</th>
                 <th>Payment Date</th>
                 <th>Payment Type</th>
                 <th>Note</th>
@@ -29,6 +30,7 @@
             <c:forEach var="i" items="${listBill}" varStatus="status">
                 <tr valign="top">
                     <td>${i.ID}</td>
+                    <td>${i.paymentAmount}</td>
                     <td>${i.paymentDate}</td>
                     <td>${i.paymentType}</td>
                     <td>${i.note}</td>
