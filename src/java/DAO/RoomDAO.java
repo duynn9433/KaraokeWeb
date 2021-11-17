@@ -115,4 +115,50 @@ public class RoomDAO extends DAO {
 //        }
 //        return res;
 //    }
+    
+    //by truong
+    public List<Room> searchRoom(String name) throws SQLException{
+        List<Room> dsRoom = new ArrayList<>();
+        String sql= "select* from tblroom where id='%?%' and isActive='1';";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, name);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            Room room = new Room();
+            room.setID(rs.getInt("id"));
+            room.setSize(rs.getString("size"));
+            room.setType(rs.getString("type"));
+            room.setPricePerHour(rs.getFloat("pricePerHour"));
+            room.setDescription(rs.getString("description"));
+            dsRoom.add(room);
+        }
+        return dsRoom;
+    }
+    public void addRoom(Room room) throws SQLException{
+        String sql = "INSERT INTO tblroom (size, type, pricePerHour, tblkaraokebarID, isActive, name) "
+                + "VALUES (?, ?, ?, '1001', '1', ?);";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1,room.getSize());
+        ps.setString(2,room.getType());
+        ps.setString(3,String.valueOf(room.getPricePerHour()));
+        ps.setString(4,room.getName());
+        ps.executeQuery();
+    }
+    public void delRoom(Room room) throws SQLException{
+        String sql = "update tblroom set isActive='0' where id=?;";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, String.valueOf(room.getID()));
+        ps.executeQuery();
+    }
+    public void editRoom(Room room) throws SQLException{
+        String sql ="UPDATE tblroom SET name = ?,size=?,type=?,pricePerHour=?,"
+                + "description=? WHERE (`ID` = ?);";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, room.getName());
+        ps.setString(2, room.getSize());
+        ps.setString(3, room.getType());
+        ps.setString(4, String.valueOf(room.getPricePerHour()));
+        ps.setString(5, room.getDescription());
+        ps.executeQuery();
+    }
 }
