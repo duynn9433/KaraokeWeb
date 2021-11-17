@@ -56,65 +56,6 @@ public class RoomDAO extends DAO {
 
         return res;
     }
-//    /**
-//     * @author nguyen ngoc duy
-//     */
-//    public List<Room> searchFreeRoom2(LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
-//        List<Room> res = new ArrayList<>();
-//        List<Room> listAllRoom = getALlRoom();
-//        List<Room> listBookingRoom = getRoomFromBooking(startDate, endDate);
-//        for (Room r : listAllRoom) {
-//            if (!listBookingRoom.contains(r)) {
-//                res.add(r);
-//            }
-//        }
-//        return res;
-//    }
-//
-//    /**
-//     * @author nguyen ngoc duy
-//     *
-//     * @return toan bo cac phong dang hoat dong
-//     */
-//    public List<Room> getALlRoom() {
-//        List<Room> res = new ArrayList<>();
-//        String sql = "{call getAllRoom()}";
-//
-//        try {
-//            PreparedStatement ps = con.prepareStatement(sql);
-//            ResultSet rs;
-//            rs = ps.executeQuery();
-//            while (rs.next()) {
-//                Room room = new Room();
-//                room.setID(rs.getInt("id"));
-//                room.setSize(rs.getString("size"));
-//                room.setType(rs.getString("type"));
-//                room.setPricePerHour(rs.getFloat("pricePerHour"));
-//                room.setDescription(rs.getString("description"));
-//                res.add(room);
-//            }
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
-//        return res;
-//    }
-//
-//    /**
-//     * @author nguyen ngoc duy
-//     *
-//     * @return cac phong dang duoc dat
-//     */
-//    public List<Room> getRoomFromBooking(LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
-//        List<Room> res = new ArrayList<>();
-//        List<Booking> listBooking = new BookingDAO().getBookingByDate(startDate, endDate);
-//        for (Booking b : listBooking) {
-//            List<BookedRoom> listBookedRoom = b.getListBookedRoom();
-//            for (BookedRoom br : listBookedRoom) {
-//                res.add(br.getRoom());
-//            }
-//        }
-//        return res;
-//    }
     
     //by truong
     public List<Room> searchRoom(String name) throws SQLException{

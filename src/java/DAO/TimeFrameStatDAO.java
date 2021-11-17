@@ -14,7 +14,11 @@ import model.*;
  *
  * @author Truong
  */
-public class TimeFrameStatDAO {
+public class TimeFrameStatDAO extends DAO{
+
+    public TimeFrameStatDAO() {
+        super();
+    }
     public List<TimeFrameStat> getListTimeFrame(LocalDateTime startDay, LocalDateTime endDay){
        List<TimeFrameStat> rs = new ArrayList<>();
     /*    endtime.setDate(endtime.getDate()+1);

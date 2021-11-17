@@ -15,6 +15,10 @@ import model.KaraokeBar;
  * @author Truong
  */
 public class KaraokeBarDAO extends DAO{
+
+    public KaraokeBarDAO() {
+        super();
+    }
     public void addKaraBar(KaraokeBar kara) throws SQLException{
         String sql = "insert into tblkaraokebar(ID,name,address,description) "
                 + "values('1001',?,?,?)";
