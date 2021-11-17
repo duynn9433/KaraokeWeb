@@ -7,9 +7,13 @@ package servlet.receptionist;
 
 import servlet.seller.*;
 import DAO.BookingDAO;
+import DAO.RoomDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.BookedRoom;
 import model.Booking;
+import model.Room;
 import model.User;
 
 /**
@@ -47,35 +52,95 @@ public class ReceptionistCancelRoomServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         System.out.println("------------");
-        System.out.println("ConfirmCancelRoom" + user.toString());
+        System.out.println("ReceptionistCancelRoom" + user.toString());
 
-        List<BookedRoom> listBookedRoom = null;
-        List<Booking> listBooking = null;
+        String name = request.getParameter("name");
+        String phoneNumber = request.getParameter("phoneNumber");
+
         BookingDAO bookingDAO = new BookingDAO();
-        String msg = null;
+        List<Booking> listBooking = null;
+
         String action = request.getParameter("action");
         System.out.println("action " + action);
-        if (action.equals("xacNhan")) {
-            listBookedRoom = (List<BookedRoom>) session.getAttribute("listDeleteBookedRoom");
-            listBooking = (List<Booking>) session.getAttribute("listBooking");
+        if (action.equals("searchRoom")) {
+            name = request.getParameter("name");
+            phoneNumber = request.getParameter("phoneNumber");
+            request.setAttribute("name", name);
+            request.setAttribute("phoneNumber", phoneNumber);
+
             try {
-                bookingDAO.deleteBooking(listBooking, listBookedRoom);
-                msg = "Xoa thanh cong";
-                session.removeAttribute("listBooking");
-                session.removeAttribute("listDeleteBookedRoom");
-                System.out.println("Xoa thanh cong");
-                request.getSession().removeAttribute("listDeleteBookedRoom");
+                listBooking = bookingDAO.searchBookingByClient(name, phoneNumber);
+                for (Booking b : listBooking) {
+                    System.out.println(b.toString());
+                }
+                //loai bo cac booking da checkin
+                for (int i = 0; i < listBooking.size(); i++) {
+                    Booking b = listBooking.get(i);
+                    List<BookedRoom> listBr = b.getListBookedRoom();
+                    for (int j = 0; j < listBr.size(); j++) {
+                        BookedRoom br = listBr.get(j);
+                        if (br.getCheckin().equals(true)) {
+                            listBr.remove(j);
+                        }
+                    }
+                    if (listBr.isEmpty()) {
+                        listBooking.remove(i);
+                    }
+                }
+                for (Booking b : listBooking) {
+                    System.out.println(b.toString());
+                }
             } catch (SQLException ex) {
-                msg = "Xoa khong thanh cong";
+                //bat exception
                 Logger.getLogger(ReceptionistCancelRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            url = "/receptionist/ConfirmCancel.jsp";
-        } else if (action.equals("huy")) {
+            session.removeAttribute("listBooking");
+            session.setAttribute("listBooking", listBooking);
 
+            url = "/receptionist/ReceptionistCancelRoom.jsp";
+
+        } else if (action.equals("deleteRoom")) {
+            listBooking = (List<Booking>) session.getAttribute("listBooking");
+            for (Booking b : listBooking) {
+                System.out.println(b.toString());
+            }
+            //session.removeAttribute("listBooking");
+
+            String[] indexs = request.getParameterValues("selectedItems");
+            for (String i : indexs) {
+                System.out.println(i);
+            }
+            List<Integer> listDeleteBookedRoomID = new ArrayList<>();
+            for (String i : indexs) {
+                listDeleteBookedRoomID.add(Integer.parseInt(i));
+            }
+            List<BookedRoom> listDeleteBookedRoom = new ArrayList<>();
+            for (Booking b : listBooking) {
+                List<BookedRoom> listBr = b.getListBookedRoom();
+
+                for (int indexBr = 0; indexBr < listBr.size(); indexBr++) {
+                    BookedRoom br = b.getListBookedRoom().get(indexBr);
+                    for (int i = 0; i < listDeleteBookedRoomID.size(); i++) {
+                        if (listDeleteBookedRoomID.get(i) == br.getID()) {
+                            listDeleteBookedRoom.add(br);
+                        }
+                    }
+                }
+
+            }
+
+            session.setAttribute("listDeleteBookedRoom", listDeleteBookedRoom);
+//            try {
+//                bookingDAO.deleteBooking(listBooking, listDeleteBookedRoom);
+//            } catch (SQLException ex) {
+//                //
+//                Logger.getLogger(SellerCancelRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+
+            url = "/receptionist/ConfirmCancel.jsp";
         }
 
-        session.setAttribute("sellerConfirmCancelMsg", msg);
         request.getRequestDispatcher(url).forward(request, response);
     }
 

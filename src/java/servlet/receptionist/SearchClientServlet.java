@@ -32,7 +32,7 @@ import model.User;
  * @author duynn
  */
 @WebServlet(name = "SearchClient", urlPatterns = {"/SearchClient"})
-public class SearchClient extends HttpServlet {
+public class SearchClientServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -68,7 +68,7 @@ public class SearchClient extends HttpServlet {
                 listClient = clientDAO.searchClient(name, phoneNumber);
                 for(Client c : listClient) System.out.println(c.toString());
             } catch (SQLException ex) {
-                Logger.getLogger(SearchClient.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SearchClientServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             
             request.getSession().removeAttribute("listClient");
