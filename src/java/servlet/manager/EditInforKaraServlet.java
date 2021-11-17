@@ -48,13 +48,13 @@ public class EditInforKaraServlet extends HttpServlet {
         String action = request.getParameter("action");
         //System.out.println("action " + action);
         if(action == null){
-            try {
+         /*   try {
                 listKara = karaokeBarDAO.getInforKara();
                 session.setAttribute("listKara", listKara);
                 url="/manager/EditInforKara.jsp";
             } catch (SQLException ex) {
                 Logger.getLogger(EditInforKaraServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         }
         else if (action.equals("edit")) {
             listKara = (List<KaraokeBar>) session.getAttribute("listKara");

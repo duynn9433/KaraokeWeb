@@ -55,15 +55,15 @@ public class EditDetailKaraServlet extends HttpServlet {
             
             karaoke = new KaraokeBar(id, name, address, action);
             
-            try {
-                karaokeBarDAO.editInforKara(karaoke);
+         /*   try {
+            //    karaokeBarDAO.editInforKara(karaoke);
                 msg = "Sua thanh cong";
                 
-            } catch (SQLException ex) {
+        //    } catch (SQLException ex) {
                 msg="Sua that bai";
                 Logger.getLogger(EditDetailKaraServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            url="/manager/EditDetailKara.jsp";
+            url="/manager/EditDetailKara.jsp";*/
         }
         session.setAttribute("editKaraMsg", msg);
         request.getRequestDispatcher(url).forward(request, response);
