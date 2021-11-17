@@ -48,6 +48,7 @@ public class ReceptionistHomeServlet extends HttpServlet {
             } else if (action.equals("ACTION_CHECKOUT")) {
                 url = "/receptionist/Checkout.jsp";
             }
+            
 
         } catch (Exception e) {
             e.printStackTrace();

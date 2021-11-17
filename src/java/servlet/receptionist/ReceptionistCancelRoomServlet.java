@@ -6,7 +6,7 @@
 package servlet.receptionist;
 
 import servlet.seller.*;
-import DAO.ClientDAO;
+import DAO.BookingDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -20,16 +20,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.BookedRoom;
 import model.Booking;
-import model.Client;
 import model.User;
 
 /**
  *
  * @author duynn
  */
-@WebServlet(name = "AddClientServlet", urlPatterns = {"/AddClientServlet"})
-public class AddClientServlet extends HttpServlet {
+@WebServlet(name = "ReceptionistCancelRoomServlet", urlPatterns = {"/ReceptionistCancelRoomServlet"})
+public class ReceptionistCancelRoomServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,37 +47,36 @@ public class AddClientServlet extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         System.out.println("------------");
-        System.out.println("AddClient" + user.toString());
+        System.out.println("ConfirmCancelRoom" + user.toString());
 
-        ClientDAO clientDAO = new ClientDAO();
-        Client client = null;
-        Booking booking = (Booking) session.getAttribute("booking");
+        List<BookedRoom> listBookedRoom = null;
+        List<Booking> listBooking = null;
+        BookingDAO bookingDAO = new BookingDAO();
+        String msg = null;
         String action = request.getParameter("action");
         System.out.println("action " + action);
-        if (action.equals("them")) {
-            String name = request.getParameter("name");
-            String phoneNumber = request.getParameter("phoneNumber");
-            String address = request.getParameter("address");
-            String email = request.getParameter("email");
-            String note = request.getParameter("note");
-
-            client = new Client(name, address, email, phoneNumber, note);
-            client.setIsActive(true);
-            System.out.println(client.toString());
+        if (action.equals("xacNhan")) {
+            listBookedRoom = (List<BookedRoom>) session.getAttribute("listDeleteBookedRoom");
+            listBooking = (List<Booking>) session.getAttribute("listBooking");
             try {
-                clientDAO.addClient(client);
-                booking.setClient(client);
-                session.removeAttribute("booking");
-                session.setAttribute("booking", booking);
-                
-                url = "/receptionist/ConfirmBooking.jsp";
+                bookingDAO.deleteBooking(listBooking, listBookedRoom);
+                msg = "Xoa thanh cong";
+                session.removeAttribute("listBooking");
+                session.removeAttribute("listDeleteBookedRoom");
+                System.out.println("Xoa thanh cong");
+                request.getSession().removeAttribute("listDeleteBookedRoom");
             } catch (SQLException ex) {
-                ex.printStackTrace();
-                Logger.getLogger(AddClientServlet.class.getName()).log(Level.SEVERE, null, ex);
+                msg = "Xoa khong thanh cong";
+                Logger.getLogger(ReceptionistCancelRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
+            url = "/receptionist/ConfirmCancel.jsp";
+        } else if (action.equals("huy")) {
+
         }
-        context.getRequestDispatcher(url).forward(request, response);
+
+        session.setAttribute("sellerConfirmCancelMsg", msg);
+        request.getRequestDispatcher(url).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
