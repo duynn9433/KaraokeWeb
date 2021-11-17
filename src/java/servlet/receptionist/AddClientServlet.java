@@ -1,13 +1,122 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package servlet.receptionist;
 
+import servlet.seller.*;
+import DAO.ClientDAO;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.Booking;
+import model.Client;
+import model.User;
+
 /**
  *
- * @author T - Q - H
+ * @author duynn
  */
-public class AddClientServlet {
-    
+@WebServlet(name = "AddClientServlet", urlPatterns = {"/AddClientServlet"})
+public class AddClientServlet extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        ServletContext context = getServletContext();
+        String url = "/receptionist/SearchFreeRoom.jsp";
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        System.out.println("------------");
+        System.out.println("AddClient" + user.toString());
+
+        ClientDAO clientDAO = new ClientDAO();
+        Client client = null;
+        Booking booking = (Booking) session.getAttribute("booking");
+        String action = request.getParameter("action");
+        System.out.println("action " + action);
+        if (action.equals("them")) {
+            String name = request.getParameter("name");
+            String phoneNumber = request.getParameter("phoneNumber");
+            String address = request.getParameter("address");
+            String email = request.getParameter("email");
+            String note = request.getParameter("note");
+
+            client = new Client(name, address, email, phoneNumber, note);
+            client.setIsActive(true);
+            System.out.println(client.toString());
+            try {
+                clientDAO.addClient(client);
+                booking.setClient(client);
+                session.removeAttribute("booking");
+                session.setAttribute("booking", booking);
+                
+                url = "/receptionist/ConfirmBooking.jsp";
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                Logger.getLogger(AddClientServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        context.getRequestDispatcher(url).forward(request, response);
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
 }
