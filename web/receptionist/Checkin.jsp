@@ -35,7 +35,7 @@
 
         <br>
 
-        <h3>Thông tin khách hàng</h3>
+        <h2>Thông tin khách hàng</h2>
         <h2>Tên: <c:out value="${sessionClient.name}" /></h2>
 
 
