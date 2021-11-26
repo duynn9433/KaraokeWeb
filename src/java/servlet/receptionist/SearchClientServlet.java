@@ -3,12 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet.manager;
+package servlet.receptionist;
 
+import servlet.seller.*;
 import DAO.ClientDAO;
-import DAO.KaraokeBarDAO;
+import DAO.RoomDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,15 +24,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Booking;
 import model.Client;
-import model.KaraokeBar;
+import model.Room;
 import model.User;
 
 /**
  *
  * @author duynn
  */
-@WebServlet(name = "AddInfoKaraServlet", urlPatterns = {"/AddInfoKaraServlet"})
-public class AddInfoKaraServlet extends HttpServlet {
+@WebServlet(name = "SearchClient", urlPatterns = {"/SearchClient"})
+public class SearchClientServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,33 +46,57 @@ public class AddInfoKaraServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ServletContext context = getServletContext();
-        String url = "/index.jsp";
+        String url = "/receptionist/SearchFreeRoom.jsp";
         HttpSession session = request.getSession();
-
-        KaraokeBar karaoke = null;
-        KaraokeBarDAO karaokeBarDAO = new KaraokeBarDAO();
-        String msg = null;
+        User user = (User) session.getAttribute("user");
+        System.out.println("------------");
+        System.out.println("SearchClient"+user.toString());
+        Booking booking = (Booking) session.getAttribute("booking");
+        
+        ClientDAO clientDAO = new ClientDAO();
+        List<Client> listClient = null;
+        String name = request.getParameter("name");
+        String phoneNumber = request.getParameter("phoneNumber");
+        
         
         String action = request.getParameter("action");
         System.out.println("action " + action);
-        if (action.equals("them")) {
-            String name = request.getParameter("name");
-            String address = request.getParameter("address");
-            String des = request.getParameter("des");
-            karaoke = new KaraokeBar(0, name, address, des);
-            
-            try{
-             //   karaokeBarDAO.addInfoKara(karaoke);
-                msg="Them thanh cong";
-                url="/manager/AddInforKara.jsp";
-            }catch(Exception e){
-                e.printStackTrace();
-                msg="Them that bai";
-                url="/manager/AddInforKara.jsp";
+        if (action.equals("Tim")) {
+            name = request.getParameter("name");
+            phoneNumber = request.getParameter("phoneNumber");
+            try {
+                listClient = clientDAO.searchClient(name, phoneNumber);
+                for(Client c : listClient) System.out.println(c.toString());
+            } catch (SQLException ex) {
+                Logger.getLogger(SearchClientServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+            request.getSession().removeAttribute("listClient");
+            request.getSession().setAttribute("listClient", listClient);
+            request.setAttribute("name", name);
+            request.setAttribute("phoneNumber", phoneNumber);
+            url="/receptionist/SearchClient.jsp";
+        }else if(action.equals("Them")){
+            name = request.getParameter("name");
+            phoneNumber = request.getParameter("phoneNumber");
+            request.setAttribute("name", name);
+            request.setAttribute("phoneNumber", phoneNumber);
+            url="/seller/AddClient.jsp";
+            
+        }else if(action.equals("Luu")){
+            listClient = (List<Client>) session.getAttribute("listClient");
+            request.getSession().removeAttribute("listClient");
+            
+            String[] index = request.getParameterValues("selectedItems");
+            booking.setClient(listClient.get(Integer.parseInt(index[0])));
+            
+            session.removeAttribute("booking");
+            session.setAttribute("booking", booking);
+            
+            url="/receptionist/ConfirmBooking.jsp";
         }
-        request.getSession().setAttribute("addKaraMsg", msg);
-        request.getRequestDispatcher(url).forward(request, response);
+        
+        context.getRequestDispatcher(url).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

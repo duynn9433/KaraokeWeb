@@ -5,28 +5,27 @@
  */
 package servlet.manager;
 
-import DAO.ClientDAO;
-import DAO.KaraokeBarDAO;
+import DAO.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletContext;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Booking;
-import model.Client;
-import model.KaraokeBar;
-import model.User;
+import model.Service;
 
 /**
  *
- * @author duynn
+ * @author Administrator
  */
-@WebServlet(name = "AddInfoKaraServlet", urlPatterns = {"/AddInfoKaraServlet"})
-public class AddInfoKaraServlet extends HttpServlet {
+@WebServlet(name = "DeleteServiceServlet", urlPatterns = {"/DeleteServiceServlet"})
+public class DeleteServiceServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,34 +38,36 @@ public class AddInfoKaraServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ServletContext context = getServletContext();
         String url = "/index.jsp";
         HttpSession session = request.getSession();
 
-        KaraokeBar karaoke = null;
-        KaraokeBarDAO karaokeBarDAO = new KaraokeBarDAO();
+        ServiceDAO sd = new ServiceDAO();
         String msg = null;
-        
+        List<Service> listService = null;
         String action = request.getParameter("action");
-        System.out.println("action " + action);
-        if (action.equals("them")) {
-            String name = request.getParameter("name");
-            String address = request.getParameter("address");
-            String des = request.getParameter("des");
-            karaoke = new KaraokeBar(0, name, address, des);
-            
+
+        if (action.equals("search")) {
+            try {
+                listService = sd.findService(request.getParameter("key"));
+                session.setAttribute("listService", listService);
+                url = "/manager/DeleteServiceView.jsp";
+            } catch (SQLException ex) {
+                Logger.getLogger(EditInforKaraServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (action.equals("delete")) {
             try{
-             //   karaokeBarDAO.addInfoKara(karaoke);
-                msg="Them thanh cong";
-                url="/manager/AddInforKara.jsp";
+                listService = (List<Service>) session.getAttribute("listService");
+                session.removeAttribute("listService");
+                String[] indexs = request.getParameterValues("selectedItems");
+                sd.deleteService(listService.get(Integer.parseInt(indexs[0])));
+                System.out.println(listService.get(Integer.parseInt(indexs[0])).toString());
+                url="/manager/DeleteServiceView.jsp";
             }catch(Exception e){
                 e.printStackTrace();
-                msg="Them that bai";
-                url="/manager/AddInforKara.jsp";
             }
         }
-        request.getSession().setAttribute("addKaraMsg", msg);
         request.getRequestDispatcher(url).forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

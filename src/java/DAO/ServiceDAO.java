@@ -20,9 +20,9 @@ import model.UsedService;
  *
  * @author xxxx9
  */
-public class ServiceDao extends DAO {
+public class ServiceDAO extends DAO {
 
-    public ServiceDao() {
+    public ServiceDAO() {
         super();
     }
 
@@ -84,6 +84,59 @@ public class ServiceDao extends DAO {
 
         con.commit();
         con.setAutoCommit(true);
+    }
+
+    public void addService(Service s)throws SQLException{
+        int maxID;
+        PreparedStatement psinit = null;
+        ResultSet rsinit = null;
+
+        psinit = con.prepareStatement("select max(s.id) as max from tblservice s");
+        rsinit = psinit.executeQuery();
+        rsinit.next();
+        maxID = rsinit.getInt("max");
+
+        s.setID(++maxID);
+        psinit.close();
+        rsinit.close();
+        //luu
+        
+        String sql = "insert into tblservice values (?,?,?,?,?,?)";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1,s.getID());
+        ps.setString(2, s.getName());
+        ps.setString(3, s.getUnity());
+        ps.setFloat(4, s.getPricePerUnit());
+        ps.setString(5, s.getDescription());
+        ps.setString(6, "1");
+        
+        ps.executeUpdate();
+        
+        ps.close();
+    }
+    
+    public void editService(Service s) throws SQLException{
+        
+        String sql="UPDATE tblservice set ID=?, name=?, unity=?,pricePerUnit = ?, description=?, isActive = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1,s.getID());
+        ps.setString(2, s.getName());
+        ps.setString(3, s.getUnity());
+        ps.setFloat(4, s.getPricePerUnit());
+        ps.setString(5, s.getDescription());
+        ps.setString(6,"1");
+        
+        ps.executeUpdate();
+        
+        ps.close();
+    }
+    
+    public void deleteService(Service s) throws SQLException{
+        String sql = "DELETE FROM tblservice WHERE ID = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1,s.getID());
+        ps.executeUpdate();
+        ps.close();
     }
 
 }

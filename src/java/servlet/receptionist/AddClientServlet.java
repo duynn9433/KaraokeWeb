@@ -3,12 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet.manager;
+package servlet.receptionist;
 
+import servlet.seller.*;
 import DAO.ClientDAO;
-import DAO.KaraokeBarDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,15 +22,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Booking;
 import model.Client;
-import model.KaraokeBar;
 import model.User;
 
 /**
  *
  * @author duynn
  */
-@WebServlet(name = "AddInfoKaraServlet", urlPatterns = {"/AddInfoKaraServlet"})
-public class AddInfoKaraServlet extends HttpServlet {
+@WebServlet(name = "AddClientServlet", urlPatterns = {"/AddClientServlet"})
+public class AddClientServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,33 +43,41 @@ public class AddInfoKaraServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ServletContext context = getServletContext();
-        String url = "/index.jsp";
+        String url = "/receptionist/SearchFreeRoom.jsp";
         HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        System.out.println("------------");
+        System.out.println("AddClient" + user.toString());
 
-        KaraokeBar karaoke = null;
-        KaraokeBarDAO karaokeBarDAO = new KaraokeBarDAO();
-        String msg = null;
-        
+        ClientDAO clientDAO = new ClientDAO();
+        Client client = null;
+        Booking booking = (Booking) session.getAttribute("booking");
         String action = request.getParameter("action");
         System.out.println("action " + action);
         if (action.equals("them")) {
             String name = request.getParameter("name");
+            String phoneNumber = request.getParameter("phoneNumber");
             String address = request.getParameter("address");
-            String des = request.getParameter("des");
-            karaoke = new KaraokeBar(0, name, address, des);
-            
-            try{
-             //   karaokeBarDAO.addInfoKara(karaoke);
-                msg="Them thanh cong";
-                url="/manager/AddInforKara.jsp";
-            }catch(Exception e){
-                e.printStackTrace();
-                msg="Them that bai";
-                url="/manager/AddInforKara.jsp";
+            String email = request.getParameter("email");
+            String note = request.getParameter("note");
+
+            client = new Client(name, address, email, phoneNumber, note);
+            client.setIsActive(true);
+            System.out.println(client.toString());
+            try {
+                clientDAO.addClient(client);
+                booking.setClient(client);
+                session.removeAttribute("booking");
+                session.setAttribute("booking", booking);
+                
+                url = "/receptionist/ConfirmBooking.jsp";
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                Logger.getLogger(AddClientServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
         }
-        request.getSession().setAttribute("addKaraMsg", msg);
-        request.getRequestDispatcher(url).forward(request, response);
+        context.getRequestDispatcher(url).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -5,8 +5,8 @@
  */
 package servlet.manager;
 
-import DAO.ClientDAO;
 import DAO.KaraokeBarDAO;
+import DAO.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletContext;
@@ -16,18 +16,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Booking;
-import model.Client;
 import model.KaraokeBar;
-import model.User;
+import model.Service;
 
 /**
  *
- * @author duynn
+ * @author Administrator
  */
-@WebServlet(name = "AddInfoKaraServlet", urlPatterns = {"/AddInfoKaraServlet"})
-public class AddInfoKaraServlet extends HttpServlet {
 
+@WebServlet(name = "AddServiceServlet", urlPatterns = {"/AddServiceServlet"})
+public class AddServiceServlet extends HttpServlet {
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,29 +42,30 @@ public class AddInfoKaraServlet extends HttpServlet {
         String url = "/index.jsp";
         HttpSession session = request.getSession();
 
-        KaraokeBar karaoke = null;
-        KaraokeBarDAO karaokeBarDAO = new KaraokeBarDAO();
+        Service service = null;
+        ServiceDAO sd = new ServiceDAO();
         String msg = null;
         
         String action = request.getParameter("action");
         System.out.println("action " + action);
         if (action.equals("them")) {
             String name = request.getParameter("name");
-            String address = request.getParameter("address");
+            String unity = request.getParameter("unity");
+            String price = request.getParameter("price");
             String des = request.getParameter("des");
-            karaoke = new KaraokeBar(0, name, address, des);
+            service = new Service(name, unity, Float.parseFloat(price),des);
             
             try{
-             //   karaokeBarDAO.addInfoKara(karaoke);
+                sd.addService(service);
                 msg="Them thanh cong";
-                url="/manager/AddInforKara.jsp";
+                url="/manager/AddServiceView.jsp";
             }catch(Exception e){
                 e.printStackTrace();
                 msg="Them that bai";
-                url="/manager/AddInforKara.jsp";
+                url="/manager/AddServiceView.jsp";
             }
         }
-        request.getSession().setAttribute("addKaraMsg", msg);
+        request.getSession().setAttribute("addServiceMsg", msg);
         request.getRequestDispatcher(url).forward(request, response);
     }
 
@@ -92,6 +92,7 @@ public class AddInfoKaraServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -107,5 +108,5 @@ public class AddInfoKaraServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+    
 }

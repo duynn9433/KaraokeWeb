@@ -31,5 +31,12 @@
             <input type="hidden" name="action" value="ACTION_CHECKOUT"/>
             <input type="submit" value="Checkout" />
         </form>
+            
+        <form action ="<c:url value="/receptionist/SearchFreeRoom.jsp"/>" method="post">
+            <input type="submit" value="Dat phong cho khach hang tai quay">
+        </form>
+        <form action ="<c:url value="/receptionist/ReceptionistCancelRoom.jsp"/>" method="post">
+            <input type="submit" value="Huy phong cho khach hang tai quay">
+        </form>
     </body>
 </html>

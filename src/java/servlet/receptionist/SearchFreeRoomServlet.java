@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlet.seller;
+package servlet.receptionist;
 
+import servlet.seller.*;
 import DAO.RoomDAO;
 import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.io.IOException;
@@ -32,8 +33,8 @@ import model.User;
  *
  * @author duynn
  */
-@WebServlet(name = "SellerBookRoomServlet", urlPatterns = {"/SellerBookRoomServlet"})
-public class SellerBookRoomServlet extends HttpServlet {
+@WebServlet(name = "SearchFreeRoomServlet", urlPatterns = {"/SearchFreeRoomServlet"})
+public class SearchFreeRoomServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,7 +48,7 @@ public class SellerBookRoomServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ServletContext context = getServletContext();
-        String url = "/seller/SellerBookRoom.jsp";
+        String url = "/receptionist/SearchFreeRoom.jsp";
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         System.out.println("------------");
@@ -74,7 +75,7 @@ public class SellerBookRoomServlet extends HttpServlet {
                 listRoom = roomDAO.searchFreeRoom(checkin, checkout);
                 request.setAttribute("listRoom", listRoom);
             } catch (SQLException ex) {
-                Logger.getLogger(SellerBookRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SearchFreeRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (action.equals("bookRoom")) {
             //lay thu tu phong da chon
@@ -94,7 +95,7 @@ public class SellerBookRoomServlet extends HttpServlet {
                     System.out.println(r.toString());
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(SellerBookRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SearchFreeRoomServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             //tao booking
@@ -109,7 +110,7 @@ public class SellerBookRoomServlet extends HttpServlet {
                 br.setCheckout(checkout);
                 br.setRoom(listRoom.get(index));
                 br.setPricePerHour(br.getRoom().getPricePerHour());
-                br.setAmount(Math.round((checkout.getHour() - checkin.getHour())*2)/2); 
+                br.setAmount(checkout.getHour() - checkin.getHour()); //****************************************
                 br.setTotalPrice(br.getAmount() * br.getPricePerHour());
 
                 //br.setID(i);
@@ -122,7 +123,7 @@ public class SellerBookRoomServlet extends HttpServlet {
                 System.out.println(i.getRoom().getID());
             }
             
-            url = "/seller/SellerBookRoomInfoView.jsp";
+            url = "/receptionist/SearchClient.jsp";
         }
 
         //request.setAttribute("user", user);

@@ -6,7 +6,7 @@ package servlet.receptionist;
 
 import DAO.BookingDAO;
 import DAO.ClientDAO;
-import DAO.ServiceDao;
+import DAO.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -86,7 +86,7 @@ public class CheckoutServlet extends HttpServlet {
 
                     url = JSP_URL;
                 } else if (request.getParameter("PAYMENT") != null) {
-                    ServiceDao dao = new ServiceDao();
+                    ServiceDAO dao = new ServiceDAO();
                     
                     int selectedBookingIndex = Integer.parseInt(request.getParameterValues("selectedBooking")[0]);
                     List<Booking> bookings = (List<Booking>) session.getAttribute(SESSION_BOOKINGS);

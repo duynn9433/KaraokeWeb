@@ -5,10 +5,12 @@
  */
 package servlet.manager;
 
-import DAO.ClientDAO;
 import DAO.KaraokeBarDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,17 +18,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Booking;
-import model.Client;
 import model.KaraokeBar;
-import model.User;
 
 /**
  *
- * @author duynn
+ * @author Truong
  */
-@WebServlet(name = "AddInfoKaraServlet", urlPatterns = {"/AddInfoKaraServlet"})
-public class AddInfoKaraServlet extends HttpServlet {
+@WebServlet(name = "EditInforKara", urlPatterns = {"/EditInforKara"})
+public class EditInforKara extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,34 +38,26 @@ public class AddInfoKaraServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         ServletContext context = getServletContext();
-        String url = "/index.jsp";
+        String url="/manager/EditInforKaraView.jsp";
         HttpSession session = request.getSession();
-
-        KaraokeBar karaoke = null;
-        KaraokeBarDAO karaokeBarDAO = new KaraokeBarDAO();
-        String msg = null;
-        
-        String action = request.getParameter("action");
-        System.out.println("action " + action);
-        if (action.equals("them")) {
+        String msg="";
+        if(request.getParameter("save").equals("save")){
             String name = request.getParameter("name");
             String address = request.getParameter("address");
             String des = request.getParameter("des");
-            karaoke = new KaraokeBar(0, name, address, des);
-            
-            try{
-             //   karaokeBarDAO.addInfoKara(karaoke);
-                msg="Them thanh cong";
-                url="/manager/AddInforKara.jsp";
-            }catch(Exception e){
-                e.printStackTrace();
-                msg="Them that bai";
-                url="/manager/AddInforKara.jsp";
+            KaraokeBar karaBar = new KaraokeBar(1001,name,address,des);
+            try {
+                new KaraokeBarDAO().editKaraBar(karaBar);
+                msg="da luu";
+                url="/manager/ManagerHomeView.jsp";
+            } catch (SQLException ex) {
+                msg="loi";
+                Logger.getLogger(EditInforKara.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        request.getSession().setAttribute("addKaraMsg", msg);
-        request.getRequestDispatcher(url).forward(request, response);
+       context.getRequestDispatcher(url).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

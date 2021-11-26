@@ -53,7 +53,7 @@ public class BillDAO extends DAO {
             Bill bill = new Bill();
             bill.setID(rs.getInt("ID"));
             bill.setPaymentDate(rs.getTimestamp("paymentDate").toLocalDateTime().toLocalDate());
-            //phai tinh bill.setPaymentAmount(rs.getFloat("paymentAmount"));
+            bill.setPaymentAmount(rs.getFloat("paymentAmount"));
             bill.setPaymentType(rs.getString("paymentType"));
             bill.setNote(rs.getString("note"));
             
@@ -106,7 +106,7 @@ public class BillDAO extends DAO {
                 br.setCheckin(rs3.getTimestamp("checkin").toLocalDateTime());
                 br.setCheckout(rs3.getTimestamp("checkout").toLocalDateTime());
                 br.setPricePerHour(rs3.getFloat("pricePerHour"));
-                //br.setAmount(rs3.getFloat("amount"));
+                br.setAmount(rs3.getFloat("amount"));
                 br.setTotalPrice(br.getPricePerHour() * br.getAmount());
                 br.setNote(rs3.getString("note"));
 
@@ -184,9 +184,7 @@ public class BillDAO extends DAO {
                 }
                 br.setListHiredStaff(listBookedStaff);
 
-//                    br.setTotalPrice(br.getTotalPrice() + 
-//                            (br.getCheckout().minus(br.getCheckin()))/60
-//                                    *br.getPricePerHour());                    
+                                 
                 listBookedRoom.add(br);
             }
             b.setListBookedRoom(listBookedRoom);
@@ -221,16 +219,16 @@ public class BillDAO extends DAO {
         con.setAutoCommit(true);
     }
     
-    public static void main(String[] args) {
-        IncomeStat is = new IncomeStat(1200, "12/2020");
-        BillDAO bd = new BillDAO();
-        List<Bill> l;
-        try {
-            l = bd.getBill(is);
-            for(Bill b: l) System.out.println(b.toString());
-        } catch (SQLException ex) {
-            Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
+//    public static void main(String[] args) {
+//        IncomeStat is = new IncomeStat(1200, "12/2020");
+//        BillDAO bd = new BillDAO();
+//        List<Bill> l;
+//        try {
+//            l = bd.getBill(is);
+//            for(Bill b: l) System.out.println(b.toString());
+//        } catch (SQLException ex) {
+//            Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        
+//    }
 }

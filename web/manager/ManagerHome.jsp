@@ -24,13 +24,13 @@
             </tr>
         </table>
         <h1>Manager's Home</h1>
-        <form action ="<c:url value="/manager/ManagerKaraoke.jsp"/>" method="post">
+        <form action ="<c:url value="/manager/ManagementKaraBarView.jsp"/>" method="post">
             <input type="submit" value="Quan li thong tin nha hang">
         </form>
         <form action ="<c:url value="/manager/.jsp"/>" method="post">
             <input type="submit" value="Quan li thong tin phong">
         </form>
-        <form action ="<c:url value="/manager/.jsp"/>" method="post">
+        <form action ="<c:url value="/manager/ServiceManagementView.jsp"/>" method="post">
             <input type="submit" value="Quan li dich vu">
         </form>
         <form action ="<c:url value="/manager/SelectStatView.jsp"/>" method="post">
