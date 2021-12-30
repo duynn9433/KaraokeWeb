@@ -1,79 +1,33 @@
-<%-- 
-    Document   : SearchFreeRoomFrm
-    Created on : Nov 9, 2021, 3:38:33 PM
-    Author     : xxxx9
---%>
-<%--
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Tạo booking</title>
+
+        <link rel="stylesheet" href="bootstraplib/bootstrap.4.0.0.min.css"
+              crossorigin="anonymous">
+        <script src="bootstraplib/jquery-3.2.1.js" crossorigin="anonymous"></script>
+        <script src="bootstraplib/popper.min.js" crossorigin="anonymous"></script>
+        <script src="bootstraplib/bootstrap.min.js" crossorigin="anonymous"></script>
+
+        <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.css"> -->
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker.min.css"> 
+      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker-standalone.css"> 
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/js/bootstrap-datetimepicker.min.js"></script>
+
     </head>
     <body>
-        <form action="<c:url value="/SearchFreeRoomFrmServlet"/>" method="POST">
-            <input type="hidden" name="action" value="SEARCH_ROOM"/>
-            <span>
-                <label for="hours">Số giờ: </label>
-                <input type="text" name="num_hour" id="hours"/>
-                <input type="submit" value="Tìm phòng trống" />
-            </span>
-        </form>
-        <br>
+        <div class="container">
 
-        <h2>Danh sách phòng trống</h2>
-        <br>
+        </div>
 
-
-
-        <form action="<c:url value="/SearchFreeRoomFrmServlet"/>" method="POST">
-            <input type="hidden" name="action" value="SELECT_ROOM"/>
-
-            <table cellspacing="5" cellpadding="5" border="1">
-                <tr>
-                    <th>Mã phòng</th>
-                    <th>Cỡ phòng</th>
-                    <th>Loại phòng</th>
-                    <th>Mô tả</th>
-                    <th>Giá</th>
-                </tr>
-
-                <c:forEach var="room" items="${rooms}" varStatus="status">
-                    <tr>
-                        <td>${room.ID}</td>
-                        <td>${room.size}</td>
-                        <td>${room.type}</td>
-                        <td>${room.description}</td>
-                        <td>${room.pricePerHour}</td>
-                        <td><input type="checkbox" name="selectedItems" value="<c:out value="${status.index}"/>"></td>
-                    </tr>
-                </c:forEach>
-
-            </table>
-            <br>
-
-            <input type="submit" value="Chọn phòng" />
-        </form>
-    </body>
-</html>
-
---%>
-
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Seller Book Room</title>
-    </head>
-    <body>
         <h1>Dat phong</h1>
         <form action="<c:url value="/CreateBookingServlet" />" method="post">
-            <input type="hidden" name="action"  value ="searchFreeRoom">
-            <!--<input type="hidden" name="user" value="${user}">-->
+            <input type="datetime-local" id="dt1" name="bdaytime" step="1" value="2021-12-30 22:26:00">
+
             <table>
                 <tr>
                     <td align="right">Check-in:</td>
@@ -116,7 +70,8 @@
             <input type="submit" value="Dat phong" name="update" />
         </form>
 
-
+        <script type="text/javascript">
+         </script>
     </body>
 </html>
 

@@ -65,6 +65,10 @@ public class CreateBookingServlet extends HttpServlet {
         if (action.equals("searchFreeRoom")) {
             String checkinString = (String) request.getParameter("checkin");
             String checkoutString = (String) request.getParameter("checkout");
+            
+            checkinString = checkinString.replace('T', ' ');
+            checkoutString = checkoutString.replace('T', ' ');
+            
             request.setAttribute("checkin", checkinString);
             request.setAttribute("checkout", checkoutString);
 
