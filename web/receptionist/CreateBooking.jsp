@@ -11,67 +11,90 @@
         <script src="bootstraplib/jquery-3.2.1.js" crossorigin="anonymous"></script>
         <script src="bootstraplib/popper.min.js" crossorigin="anonymous"></script>
         <script src="bootstraplib/bootstrap.min.js" crossorigin="anonymous"></script>
-
-        <!-- <link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.css"> -->
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
-      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker.min.css"> 
-      <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker-standalone.css"> 
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/js/bootstrap-datetimepicker.min.js"></script>
-
     </head>
     <body>
         <div class="container">
+            <div class="row my-2">
+                <h2>Đặt phòng</h2>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <form action="<c:url value="/CreateBookingServlet" />" method="post">
+                        <input type="hidden" name="action"  value ="searchFreeRoom">
+                            <div class="row">
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <label for="dt1">Check-in:</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <input type="datetime-local" id="dt1" name="checkin" step="1" value="${checkinStr}">
+                                    </div>
+                                </div>
+    
+                            </div>
+    
+                            <div class="row">
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <label for="dt2">Check-out:</label>
+                                    </div>
+                                </div>
+    
+                                <div class="col">
+                                    <div class="form-group">
+                                        <input type="datetime-local" id="dt2" name="checkout" step="1" value="${checkoutStr}">
+                                    </div>
+                                </div>
+                            </div>
+                        <input class="btn btn-primary"  type="submit" value="Tìm kiếm">
+                    </form>
+                </div>
 
+            </div>
+
+            <div class="row mt-4">
+                <div class="col">
+                    <form action="<c:url value="/CreateBookingServlet" />" method="post">
+                        <input type="hidden" name="action"  value ="bookRoom">
+                        <table  class="table table-striped"  cellspacing="5" cellpadding="5" border="1">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Cỡ</th>
+                                    <th>Hạng</th>
+                                    <th>Giá / h</th>
+                                    <th>Mô tả</th>
+                                    <th>Chọn</th>
+                                </tr>
+                            </thead>
+
+                            </tr>
+                            <c:forEach var="i" items="${listRoom}" varStatus="status">
+                                <tr valign="top">
+                                    <td><c:out value="${i.ID}"/></td>
+                                    <td>${i.size}</td>
+                                    <td>${i.type}</td>
+                                    <td>${i.pricePerHour}</td>
+                                    <td>${i.description}</td>
+                                    
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="selectedItems" value="<c:out value="${status.index}"/>">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                        <input type="hidden" name="checkin" value="${checkin}">
+                        <input type="hidden" name="checkout" value="${checkout}">
+                        <input class="btn btn-primary" type="submit" value="Đặt phòng" name="update" />
+                    </form>
+                </div>
+
+            </div>
         </div>
-
-        <h1>Dat phong</h1>
-        <form action="<c:url value="/CreateBookingServlet" />" method="post">
-            <input type="datetime-local" id="dt1" name="bdaytime" step="1" value="2021-12-30 22:26:00">
-
-            <table>
-                <tr>
-                    <td align="right">Check-in:</td>
-                    <td><input type="text" name="checkin" value="2021-11-10 00:00:00"></td>
-                </tr>
-                <tr>
-                    <td align="right">Check-out:</td>
-                    <td><input type="text" name="checkout" value="2021-11-10 01:00:00"></td>
-                </tr>
-                <tr>
-                <input type="submit" value="Tim">
-                </tr>
-            </table>
-        </form>
-        <form action="<c:url value="/CreateBookingServlet" />" method="post">
-            <input type="hidden" name="action"  value ="bookRoom">
-            <table cellspacing="5" cellpadding="5" border="1">
-                <tr>
-                    <th>ID</th>
-                    <th>Co</th>
-                    <th>Hang</th>
-                    <th>Gia</th>
-                    <th>Mo ta</th>
-                </tr>
-                </tr>
-                <c:forEach var="i" items="${listRoom}" varStatus="status">
-                    <tr valign="top">
-                        <td>${i.ID}</td>
-                        <td>${i.size}</td>
-                        <td>${i.type}</td>
-                        <td>${i.pricePerHour}</td>
-                        <td>${i.description}</td>
-                        <td><c:out value="${i.ID}"/></td>
-                        <td><input type="checkbox" name="selectedItems" value="<c:out value="${status.index}"/>"></td>
-                    </tr>
-                </c:forEach>
-            </table>
-            <input type="hidden" name="checkin" value="${checkin}">
-            <input type="hidden" name="checkout" value="${checkout}">
-            <input type="submit" value="Dat phong" name="update" />
-        </form>
-
-        <script type="text/javascript">
-         </script>
     </body>
 </html>
 
