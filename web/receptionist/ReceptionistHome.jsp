@@ -13,15 +13,20 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Nhan vien le tan</title>
+
+        <link rel="stylesheet" href="bootstraplib/bootstrap.4.0.0.min.css" crossorigin="anonymous">
+        <script src="bootstraplib/jquery-3.2.1.js" crossorigin="anonymous"></script>
+        <script src="bootstraplib/popper.min.js" crossorigin="anonymous"></script>
+        <script src="bootstraplib/bootstrap.min.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        
-        <% 
-            User user = (User) session.getAttribute("user") ;
+
+        <%
+            User user = (User) session.getAttribute("user");
         %>
         <h2>${user.name}</h2>
-        
-        
+
+
         <form action="<c:url value="/ReceptionistHomeServlet"/>" method="POST">
             <input type="hidden" name="action" value="ACTION_CHECKIN"/>
             <input type="submit" value="Checkin" />
@@ -31,7 +36,7 @@
             <input type="hidden" name="action" value="ACTION_CHECKOUT"/>
             <input type="submit" value="Checkout" />
         </form>
-            
+
         <form action ="<c:url value="/receptionist/SearchFreeRoom.jsp"/>" method="post">
             <input type="submit" value="Dat phong cho khach hang tai quay">
         </form>
