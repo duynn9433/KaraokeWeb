@@ -58,6 +58,7 @@ public class PaymentServlet extends HttpServlet {
                 BillDAO dao = new BillDAO();
 
                 dao.addBill(bill);
+                url="/receptionist/ReceptionistHome.jsp";
 
             } else {
                 Booking booking = (Booking) request.getAttribute(REQUEST_BOOKING);

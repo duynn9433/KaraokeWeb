@@ -30,7 +30,6 @@
             <div class="row">
 
                 <form action="<c:url value="/CheckinServlet"/>" method="POST">
-
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
@@ -47,7 +46,7 @@
                                        id="customer_phone" placeholder="Nhập số điện thoại" value="2000001" />
                             </div>
                         </div>
-                        <div class="col"style="display: flex; align-items:flex-end;">
+                        <div class="col" style="display: flex; align-items:flex-end;">
                             <div class="form-group">
                                 <input type="submit" class="btn btn-primary" name="SEARCH_CUSTOMER" value="Tìm kiếm" />
                             </div>
@@ -57,8 +56,7 @@
             </div>
             <br>
             <div class="row">
-                <h3>Thông tin khách hàng</h3>
-
+                <h3 class="text-secondary">Thông tin khách hàng</h3>
             </div>
             <div class="row">
                 <h4>Tên:
@@ -66,34 +64,48 @@
                 </h4>
             </div>
             <br>
-            <div class="row">
-                <h3>Danh sách Booking: </h3>
+            <div class="row mb-3">
+                <h3 class="text-secondary">Danh sách Booking: </h3>
+                
             </div>
 
             <div class="row">
                 <form action="<c:url value="/CheckinServlet"/>" method="POST">
                     <c:forEach var="booking" items="${requestBookings}" varStatus="statusBooking">
-                        <h3>Booking ${booking.ID}</h3>
-                        <input type="checkbox" name="selectedBooking" value="<c:out value="
-                               ${statusBooking.index}" />">
-
-                        <table cellspacing="5" cellpadding="5" border="1">
-                            <tr>
-                                <th>Mã phòng</th>
-                                <th>Thời gian đặt trước</th>
-                            </tr>
-
-                            <c:forEach var="bookedRoom" items="${booking.listBookedRoom}"
-                                       varStatus="statusBooked">
-                                <tr valign="top">
-                                    <td>${bookedRoom.room.ID}</td>
-                                    <td>
-                                        <tags:ldt date="${booking.bookDate}" pattern="dd/MM/yyyy" />
-                                    </td>
-                                </tr>
-                            </c:forEach>
-
-                        </table>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-1" style="display: flex; align-items: baseline;">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="selectedBooking"
+                                        value="<c:out value="${statusBooking.index}" />">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <table class="table" border="1">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>Mã phòng</th>
+                                                <th>Thời gian đặt trước</th>
+                                                <th>Giá / h</th>
+                                            </tr>
+                                        </thead>
+                                       
+            
+                                        <c:forEach var="bookedRoom" items="${booking.listBookedRoom}"
+                                                   varStatus="statusBooked">
+                                            <tr valign="top">
+                                                <td>${bookedRoom.room.ID}</td>
+                                                <td>
+                                                    <tags:ldt date="${booking.bookDate}" pattern="dd/MM/yyyy" />
+                                                </td>
+                                                <td>${bookedRoom.pricePerHour}</td>
+                                            </tr>
+                                        </c:forEach>
+            
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </c:forEach>
 
                     <div class="btn-group" role="group" aria-label="Basic example">

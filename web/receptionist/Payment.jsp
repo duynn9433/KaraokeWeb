@@ -12,76 +12,128 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Hóa đơn</title>
+
+        <link rel="stylesheet" href="bootstraplib/bootstrap.4.0.0.min.css"
+        crossorigin="anonymous">
+  <script src="bootstraplib/jquery-3.2.1.js" crossorigin="anonymous"></script>
+  <script src="bootstraplib/popper.min.js" crossorigin="anonymous"></script>
+  <script src="bootstraplib/bootstrap.min.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <form action="<c:url value="/PaymentServlet"/>" method="POST">
-            <h2>Hóa đơn</h2>
-            <h3>Tên khách hàng: ${booking.client.name}</h3>
-            <h3>Khuyến mãi: ${booking.saleOff}</h3>
-            <h3>Tổng: ${totalMoney}</h3>
-            
-            <span>
-                <h3>Phương thức thanh toán: </h3>
-                <input type="text" name="paymentMethod">
-            </span>
-            
-            
-            <span>
-                <h3>Ghi chú: </h3>
-                <input type="text" name="note">
-            </span>
-            
+        <div class="container">
+            <div class="row">
+                <form action="<c:url value="/PaymentServlet"/>" method="POST">
 
-            <h3>Danh sách phòng</h3>
-            <table cellspacing="5" cellpadding="5" border="1">
-                <tr>
-                    <th>Mã phòng</th>
-                    <th>Checkin</th>
-                    <th>Checkout</th>
-                    <th>Đơn giá</th>
-                    <th>Thành tiền</th>
-                </tr>
+                <h2>Hóa đơn</h2>
 
-                <c:forEach var="bookedRoom" items="${booking.listBookedRoom}" varStatus="statusBookedRoom">
-                    <tr valign="top">
-                        <td>${bookedRoom.room.ID}</td>
-                        <td><tags:ldt date="${bookedRoom.checkin}" pattern="HH:mm:ss dd/MM/yyyy"/></td>   
-                        <td><tags:ldt date="${bookedRoom.checkout}" pattern="HH:mm:ss dd/MM/yyyy"/></td>
-                        <td>${bookedRoom.pricePerHour}</td>
-                        
-                        
-                        
-                        <td><c:out value="${bookedRoom.pricePerHour * Duration.between(bookedRoom.checkin, bookedRoom.checkout).toHours()}"/></td>
-                    </tr>
-                </c:forEach>
-            </table>
+                <div class="container">
+                    <div class="row my-1">
+                        <div class="col">
+                            <h5 class="text-secondary mr-1">Tên khách hàng: </h5>
+                        </div>
+                        <div class="col">
+                            <h5>${booking.client.name}</h5>
+                        </div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col">
+                            <h5 class="text-secondary mr-1">Khuyến mãi: </h5>
+                            
+                        </div>
+                        <div class="col">
+                            <h5>${booking.saleOff}</h5>
+                        </div>
+                    </div>
+                    <div class="row my-1">
+                        <div class="col">
+                            <h5 class="text-secondary mr-1">Tổng: </h5>
+                            
+                        </div>
+                        <div class="col">
+                            <h5>${totalMoney}</h4>
+                        </div>
+                    </div>
 
-            <h3>Danh sách dịch vụ: </h3>
-            <table cellspacing="5" cellpadding="5" border="1">
-                <tr>
-                    <th>Mã phòng</th>
-                    <th>Dịch vụ</th>
-                    <th>Số lượng</th>
-                    <th>Đơn giá</th>
-                    <th>Thành tiền</th>
-                    <th>Ghi chú</th>
-                </tr>
+                    <div class="row my-1">
+                        <div class="col">
+                            <h5 class="mr-1">Phương thức thanh toán: </h5>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text" name="paymentMethod">
+                        </div> 
+                    </div>
 
-                <c:forEach var="bookedRoom" items="${booking.listBookedRoom}" varStatus="statusService">
-                    <c:forEach var="usedService" items="${bookedRoom.listUsedService}" varStatus="statusService">
-                        <tr valign="top">
-                            <td>${bookedRoom.room.ID}</td>
-                            <td>${usedService.service.name}</td>   
-                            <td>${usedService.service.unity}</td>   
-                            <td>${usedService.service.pricePerUnit}</td>
-                            <td>${usedService.totalPrice}</td>
-                            <td>${usedService.note}</td>
-                        </tr>
-                    </c:forEach>
-                </c:forEach>
-            </table>
-            
-            <input type="submit" value="Hoàn thành" name="DONE" />
-        </form>
+                    <div class="row my-1">
+                        <div class="col">
+                            <h5 class="mr-1">Ghi chú: </h5>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text" name="note">
+                        </div> 
+                    </div>
+
+                    <div class="row my-2" >
+                        <h3>Danh sách phòng:</h3>
+                    </div>
+
+                    <div class="row my-2">
+                        <table class="table" cellspacing="5" cellpadding="5" border="1">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Mã phòng</th>
+                                    <th>Checkin</th>
+                                    <th>Checkout</th>
+                                    <th>Đơn giá</th>
+                                    <th>Thành tiền</th>
+                                </tr>
+                            </thead>
+                            
+                            <c:forEach var="bookedRoom" items="${booking.listBookedRoom}" varStatus="statusBookedRoom">
+                                <tr valign="top">
+                                    <td>${bookedRoom.room.ID}</td>
+                                    <td><tags:ldt date="${bookedRoom.checkin}" pattern="HH:mm:ss dd/MM/yyyy"/></td>   
+                                    <td><tags:ldt date="${bookedRoom.checkout}" pattern="HH:mm:ss dd/MM/yyyy"/></td>
+                                    <td>${bookedRoom.pricePerHour}</td>
+                                    <td><c:out value="${bookedRoom.pricePerHour * Duration.between(bookedRoom.checkin, bookedRoom.checkout).toHours()}"/></td>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </div>
+
+                    <div class="row mt-4 mb-1">
+                        <h3>Danh sách dịch vụ: </h3>
+                    </div>
+
+                    <div class="row my-1">
+                        <table class="table" cellspacing="5" cellpadding="5" border="1">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Mã phòng</th>
+                                    <th>Dịch vụ</th>
+                                    <th>Số lượng</th>
+                                    <th>Đơn giá</th>
+                                    <th>Thành tiền</th>
+                                    <th>Ghi chú</th>
+                                </tr>
+                            </thead>
+                            <c:forEach var="bookedRoom" items="${booking.listBookedRoom}" varStatus="statusService">
+                                <c:forEach var="usedService" items="${bookedRoom.listUsedService}" varStatus="statusService">
+                                    <tr valign="top">
+                                        <td>${bookedRoom.room.ID}</td>
+                                        <td>${usedService.service.name}</td>   
+                                        <td>${usedService.service.unity}</td>   
+                                        <td>${usedService.service.pricePerUnit}</td>
+                                        <td>${usedService.totalPrice}</td>
+                                        <td>${usedService.note}</td>
+                                    </tr>
+                                </c:forEach>
+                            </c:forEach>
+                        </table>
+                    </div>
+                </div>
+                <input class="btn btn-primary mt-4" type="submit" value="Hoàn thành" name="DONE" />
+            </form>
+            </div>
+        </div>
     </body>
 </html>
