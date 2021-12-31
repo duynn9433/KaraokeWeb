@@ -61,7 +61,7 @@ public class AddInforKara extends HttpServlet {
                 msg = "loi";
                 Logger.getLogger(AddInforKara.class.getName()).log(Level.SEVERE, null, ex);
             }*/
-           url="/manager/ManagerHomeView.jsp";
+           url="/manager/ManagerHome.jsp";
       //  }
         context.getRequestDispatcher(url).forward(request, response);
     }

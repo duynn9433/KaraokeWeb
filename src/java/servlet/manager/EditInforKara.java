@@ -51,7 +51,7 @@ public class EditInforKara extends HttpServlet {
             try {
                 new KaraokeBarDAO().editKaraBar(karaBar);
                 msg="da luu";
-                url="/manager/ManagerHomeView.jsp";
+                url="/manager/ManagerHome.jsp";
             } catch (SQLException ex) {
                 msg="loi";
                 Logger.getLogger(EditInforKara.class.getName()).log(Level.SEVERE, null, ex);
