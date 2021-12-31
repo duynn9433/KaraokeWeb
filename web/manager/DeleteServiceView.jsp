@@ -10,15 +10,25 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Delete Service</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     </head>
+    
+    <style>
+        .btn-primary{
+            width: 100px;
+        }
+    </style>
+    
     <body>
         <h1>Delete Service</h1>
         <div>
-            <form action="<c:url value="/DeleteServiceServlet"/>" method="post">
+            <form class ="form-inline" action="<c:url value="/DeleteServiceServlet"/>" method="post">
                 <input type ="hidden" name ="action" value ="search">
-                <input type ="text" name = "key">
-                <input type ="submit" name ="search" value ="Tim kiem">
+                <input class ="form-control" type ="text" name = "key">
+                <input class = "btn btn-primary" type ="submit" name ="search" value ="Tim kiem">
                 <input type="hidden" name="action"  value ="search">
             </form>
         </div><br><br>
@@ -44,13 +54,12 @@
                         <td><input type="checkbox" name="selectedItems" value="<c:out value="${status.index}"/>"></td>
                     </tr>
                 </c:forEach>
-            </table>
-            <input type="submit" value="Xoa" name="delete" />
-
+            </table><br>
+            <input class ="btn btn-primary" type="submit" value="Xoa" name="delete" />
         </form>
         <form action ="<c:url value="/manager/ManagerHome.jsp"/>" method="post">
 
-            <input type="submit" value="Home">
+            <input class ="btn btn-primary" type="submit" value="Home">
         </form>
     </body>
 </html>
