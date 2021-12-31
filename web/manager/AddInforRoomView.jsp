@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,8 +13,22 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <%
+            String msg = (String) request.getSession().getAttribute("addRoomMsg");
+            if (msg == null) {
+
+            } else {
+        %>
+        <script type="text/javascript">
+            var msg = "${addRoomMsg}";
+            alert(msg);
+        </script>
+        <%
+                request.getSession().removeAttribute("addRoomMsg");
+            }
+        %>
         <h1>Add Infor Room </h1>
-        <form action="" method="post">
+        <form action="<c:url value="/AddInforRoomServlet"/>" method="post">
             Name:<br><input type="text" name="name"><br>
             Size : <br><select name="selectsize">
                 <option>Small</option>

@@ -51,13 +51,14 @@ public class EditInforKara extends HttpServlet {
             try {
                 new KaraokeBarDAO().editKaraBar(karaBar);
                 msg="da luu";
-                url="/manager/ManagerHome.jsp";
+                url="/manager/EditInforKaraView.jsp";
             } catch (SQLException ex) {
                 msg="loi";
                 Logger.getLogger(EditInforKara.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-       context.getRequestDispatcher(url).forward(request, response);
+       request.getSession().setAttribute("editKaraMsg", msg);
+       request.getRequestDispatcher(url).forward(request,response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

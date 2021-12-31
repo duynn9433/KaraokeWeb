@@ -15,6 +15,11 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <% String msg = (String)request.getSession().getAttribute("editKaraMsg");
+            if(msg!=null){%>
+        <script> alert("${editKaraMsg}"); </script>
+        <% request.getSession().removeAttribute("editKaraMsg");
+            }%>
          <h1>Edit Infor Kara Bar</h1>
         <form action="<c:url value="/EditInforKara"/>" method="POST">
             Name:<br><input type="text" name="name" value="${kara.name}"><br>
