@@ -13,6 +13,12 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <% String msg = (String)request.getSession().getAttribute("addKaraMsg");
+            if(msg!=null){%>
+        <script> alert("${addKaraMsg}"); </script>
+        <% request.getSession().removeAttribute("addKaraMsg");
+            }%>
+        
         <h1>Add Infor Kara Bar</h1>
         <form action="<c:url value="/AddInforKara"/>" method="POST">
             Name:<br><input type="text" name="name"><br>

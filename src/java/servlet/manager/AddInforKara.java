@@ -48,7 +48,7 @@ public class AddInforKara extends HttpServlet {
         String msg="";
        
         String action=request.getParameter("save");
-       // if(action.equals("save")){
+        if(action.equals("save")){
             
              /*   String name = request.getParameter("name");
                 String address = request.getParameter("address");
@@ -61,9 +61,11 @@ public class AddInforKara extends HttpServlet {
                 msg = "loi";
                 Logger.getLogger(AddInforKara.class.getName()).log(Level.SEVERE, null, ex);
             }*/
-           url="/manager/ManagerHomeView.jsp";
-      //  }
-        context.getRequestDispatcher(url).forward(request, response);
+           url="/manager/AddInforKaraView.jsp";
+           msg ="luu thanh cong";
+        }
+       request.getSession().setAttribute("addKaraMsg", msg);
+       request.getRequestDispatcher(url).forward(request,response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
