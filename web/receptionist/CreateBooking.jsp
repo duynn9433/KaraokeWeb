@@ -21,33 +21,33 @@
                 <div class="col">
                     <form action="<c:url value="/CreateBookingServlet" />" method="post">
                         <input type="hidden" name="action"  value ="searchFreeRoom">
-                            <div class="row">
-                                <div class="col-2">
-                                    <div class="form-group">
-                                        <label for="dt1">Check-in:</label>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <input type="datetime-local" id="dt1" name="checkin" step="1" value="${checkinStr}">
-                                    </div>
-                                </div>
-    
-                            </div>
-    
-                            <div class="row">
-                                <div class="col-2">
-                                    <div class="form-group">
-                                        <label for="dt2">Check-out:</label>
-                                    </div>
-                                </div>
-    
-                                <div class="col">
-                                    <div class="form-group">
-                                        <input type="datetime-local" id="dt2" name="checkout" step="1" value="${checkoutStr}">
-                                    </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="dt1">Check-in:</label>
                                 </div>
                             </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <input type="datetime-local" id="dt1" name="checkin" step="1" value="${checkinStr}">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="dt2">Check-out:</label>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="form-group">
+                                    <input type="datetime-local" id="dt2" name="checkout" step="1" value="${checkoutStr}">
+                                </div>
+                            </div>
+                        </div>
                         <input class="btn btn-primary"  type="submit" value="Tìm kiếm">
                     </form>
                 </div>
@@ -78,7 +78,7 @@
                                     <td>${i.type}</td>
                                     <td>${i.pricePerHour}</td>
                                     <td>${i.description}</td>
-                                    
+
                                     <td>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="selectedItems" value="<c:out value="${status.index}"/>">

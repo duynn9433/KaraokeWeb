@@ -67,8 +67,8 @@ public class SellerBookRoomServlet extends HttpServlet {
 
             System.out.println(checkinString + " " + checkoutString);
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            checkin = LocalDateTime.parse(checkinString, dtf);
-            checkout = LocalDateTime.parse(checkoutString, dtf);
+            checkin = LocalDateTime.parse(checkinString);
+            checkout = LocalDateTime.parse(checkoutString);
 
             try {
                 listRoom = roomDAO.searchFreeRoom(checkin, checkout);
@@ -86,8 +86,8 @@ public class SellerBookRoomServlet extends HttpServlet {
                 String checkinString = (String) request.getParameter("checkin");
                 String checkoutString = (String) request.getParameter("checkout");
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                checkin = LocalDateTime.parse(checkinString, dtf);
-                checkout = LocalDateTime.parse(checkoutString, dtf);
+                checkin = LocalDateTime.parse(checkinString);
+                checkout = LocalDateTime.parse(checkoutString);
                 System.out.println("bookroomdate:" + checkin + " " + checkout);
                 listRoom = roomDAO.searchFreeRoom(checkin, checkout);
                 for (Room r : listRoom) {
