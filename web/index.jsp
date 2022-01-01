@@ -38,11 +38,11 @@ and open the template in the editor.
                     <table>
                         <tr>
                             <td>Username:</td>
-                            <td><input class = "form-control" type="text" name="username" value="receptionist" required></td>
+                            <td><input class = "form-control" type="text" name="username" value="seller" required></td>
                         </tr>
                         <tr>
                             <td>Password:</td>
-                            <td><input class = "form-control" type="password" name="password" value="receptionist" required></td>
+                            <td><input class = "form-control" type="password" name="password" value="seller" required></td>
                         </tr>
                     </table>
                     <input class = "btn" type="submit" value ='Dang nhap'>

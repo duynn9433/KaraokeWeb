@@ -7,12 +7,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
+<!--<!DOCTYPE html>-->
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Seller Home</title>
-        
+
         <link rel="stylesheet" href="bootstraplib/bootstrap.4.0.0.min.css"
               crossorigin="anonymous">
         <script src="bootstraplib/jquery-3.2.1.js" crossorigin="anonymous"></script>
@@ -20,31 +20,42 @@
         <script src="bootstraplib/bootstrap.min.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <table>
-            <tr>
-<!--                <td><button onclick="location.href = 'index.html'">Logout</button></td>-->
-                <td>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
                     <form action="<c:url value="/sellerHomeServlet"/>" method="post">
-                        <input type="submit" value="Log out">
+                        <input class="btn btn-primary" type="submit" value="Log out">
                     </form>
-                </td>
-                <td>Logged in as: ${user.name}</td>
-            </tr>
-        </table>
-        <h1>Seller's Home</h1>
-        <!--        <form action="SellerBookingServlet" method="post">
-                    <input type ="hidden" name="user" value=${user}>
-                    <input type="submit" value="Dat phong cho khach hang qua dien thoai">
-                </form>
-                <form action="sellerCancel" method="post">
-                    <input type ="hidden" name="user" value=${user}>
-                    <input type="submit" value="Huy phong cho khach hang qua dien thoai">
-                </form>-->
-        <form action ="<c:url value="/seller/SellerBookRoom.jsp"/>" method="post">
-            <input type="submit" value="Dat phong cho khach qua dien thoai">
-        </form>
-        <form action ="<c:url value="/seller/SellerCancelRoomView.jsp"/>" method="post">
-            <input type="submit" value="Huy phong cho khach qua dien thoai">
-        </form>
+                </div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    Logged in as: ${user.name}
+                </div>
+            </div>
+            <div class ="row" style = "margin-top:20px;">
+                <div class="col-12 text-center">
+                    <h1>Seller's Home</h1>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-12 text-center">
+                    <table>
+                        <tr>
+                        <form action ="<c:url value="/seller/SellerBookRoom.jsp"/>" method="post">
+                            <input class="btn btn-primary" type="submit" value="Đặt phòng cho khách qua điện thoại">
+                        </form>
+                        </tr>
+                        <tr></tr> <br><br>
+                        <tr>
+                        <form action ="<c:url value="/seller/SellerCancelRoomView.jsp"/>" method="get">
+                            <input class="btn btn-primary" type="submit" value="Huỷ phòng cho khách qua điện thoại">
+                        </form>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
     </body>
 </html>
