@@ -10,15 +10,18 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Search Service</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     </head>
     <body>
         <h1>Search Service</h1>
         <div>
-            <form action="<c:url value="/SearchServiceServlet"/>" method="post">
+            <form class = "form-inline" action="<c:url value="/SearchServiceServlet"/>" method="post">
                 <input type ="hidden" name ="action" value ="search">
-                <input type ="text" name = "key">
-                <input type ="submit" name ="search" value ="Tim kiem">
+                <input class = "form-control" type ="text" name = "key" required>
+                <input class = "btn btn-primary" type ="submit" name ="search" value ="Tim kiem">
                 <input type="hidden" name="action"  value ="search">
             </form>
         </div><br><br>
@@ -45,7 +48,7 @@
                     </tr>
                 </c:forEach>
             </table>
-            <input type="submit" value="Sua" name="edit" />
+            <input class = "btn btn-primary" type="submit" value="Sua" name="edit" />
         </form>
     </body>
 </html>

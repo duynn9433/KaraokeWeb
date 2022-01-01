@@ -9,15 +9,26 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Manager Home View</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     </head>
+    
+    <style>
+        .btn-primary{
+            width: 200px;
+        }
+    </style>
+    
     <body>
         <table>
             <tr>
                 <td>
                     <form action="<c:url value="/ManagerHomeServlet"/>" method="post">
-                        <input type="submit" value="Log out">
+                        <input class = "btn btn-danger" type="submit" value="Log out">
                     </form>
                 </td>
                 <td>Logged in as: ${user.name}</td>
@@ -25,16 +36,16 @@
         </table>
         <h1>Manager's Home</h1>
         <form action ="<c:url value="/manager/ManagementKaraBarView.jsp"/>" method="post">
-            <input type="submit" value="Quan li thong tin nha hang">
-        </form>
+            <input class = "btn btn-primary" type="submit" value="Quan li thong tin nha hang">
+        </form><br>
         <form action ="<c:url value="/manager/.jsp"/>" method="post">
-            <input type="submit" value="Quan li thong tin phong">
-        </form>
+            <input class = "btn btn-primary" type="submit" value="Quan li thong tin phong">
+        </form><br>
         <form action ="<c:url value="/manager/ServiceManagementView.jsp"/>" method="post">
-            <input type="submit" value="Quan li dich vu">
-        </form>
+            <input class = "btn btn-primary" type="submit" value="Quan li dich vu">
+        </form><br>
         <form action ="<c:url value="/manager/SelectStatView.jsp"/>" method="post">
-            <input type="submit" value="Xem bao cao thong ke">
+            <input class = "btn btn-primary" type="submit" value="Xem bao cao thong ke">
         </form>
     </body>
 </html>
