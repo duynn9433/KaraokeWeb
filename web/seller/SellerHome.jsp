@@ -27,12 +27,12 @@
             <div class="row">
                 <div class="col-sm-4">
                     <form action="<c:url value="/sellerHomeServlet"/>" method="post">
-                        <input class="btn btn-primary" type="submit" value="Log out">
+                        <input class="btn btn-danger" type="submit" value="Log out">
                     </form>
                 </div>
                 <div class="col-sm-4"></div>
                 <div class="col-sm-4">
-                    Logged in as: ${user.name}
+                    <h3>Logged in as: ${user.name} </h3>
                 </div>
             </div>
             <div class ="row" style = "margin-top:20px;">
