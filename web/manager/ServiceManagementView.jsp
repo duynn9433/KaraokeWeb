@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Service Management</title>
+        <title>Quản lý dịch vụ</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -23,20 +23,20 @@
     </style>
     
     <body>
-        <h1>Service Management</h1>
+        <h1>Quản lý dịch vụ</h1>
         <div>
             <form action ="AddServiceView.jsp">
-                <input class = "btn btn-primary" type ="submit" value ="Add Service">
+                <input class = "btn btn-primary" type ="submit" value ="Thêm dịch vụ">
             </form>
         </div><br>
         <div>
             <form action ="SearchServiceView.jsp">
-                <input class = "btn btn-primary" type ="submit" value ="Edit Service">
+                <input class = "btn btn-primary" type ="submit" value ="Sửa dịch vụ">
             </form>
         </div><br>
         <div>
             <form action ="DeleteServiceView.jsp">
-                <input class = "btn btn-primary" type ="submit" value ="Delete Service">
+                <input class = "btn btn-primary" type ="submit" value ="Xóa dịch vụ">
             </form>
         </div><br>
     </body>

@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Edit Service</title>
+        <title>Sửa dịch vụ</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -39,32 +39,32 @@
                 request.getSession().removeAttribute("editServiceMsg");
             }
         %>
-        <h1>Sua dich vu</h1> 
+        <h1>Sửa dịch vụ</h1> 
         <form action="<c:url value="/EditServiceServlet"/>" method="post">
             <table>
                 <tr>
-                    <td>Ten:</td>
-                    <td><input class = "form-control" type="text" name="name" value="name" required></td>
+                    <td>Tên:</td>
+                    <td><input class = "form-control" type="text" name="name" value="tên" required></td>
                 </tr>
                 <tr>
-                    <td>Loai:</td>
-                    <td><input class = "form-control" type="text" name="unity" value="unity" required></td>
+                    <td>Loại:</td>
+                    <td><input class = "form-control" type="text" name="unity" value="loại" required></td>
                 </tr>
                 <tr>
-                    <td>Gia:</td>
-                    <td><input class = "form-control" type="text" name="price" value="price" required></td>
+                    <td>Giá:</td>
+                    <td><input class = "form-control" type="text" name="price" value="giá" required></td>
                 </tr>
                 <tr>
-                    <td>Mo ta:</td>
-                    <td><input class = "form-control" type="text" name="des" value="des" required></td>
+                    <td>Mô tả</td>
+                    <td><input class = "form-control" type="text" name="des" value="mô tả" required></td>
                 </tr>
 
             </table>
-            <input type="hidden" name="action" value="sua"><br>
+            <input type="hidden" name="action" value="Sửa"><br>
             <input class = "btn btn-primary" type="submit" value="Sua">
         </form>
         <form action ="<c:url value="/manager/ManagerHome.jsp"/>" method="post">
-            <input class = "btn btn-primary" type="submit" value="Home">
+            <input class = "btn btn-primary" type="submit" value="HOME">
         </form>
     </body>
 </html>
