@@ -43,7 +43,7 @@ public class EditInforKara extends HttpServlet {
         String url="/manager/EditInforKaraView.jsp";
         HttpSession session = request.getSession();
         String msg="";
-        if(request.getParameter("save").equals("save")){
+        if(request.getParameter("save").equals("luu")){
             String name = request.getParameter("name");
             String address = request.getParameter("address");
             String des = request.getParameter("des");

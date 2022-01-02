@@ -48,7 +48,7 @@ public class AddInforKara extends HttpServlet {
         String msg="";
        
         String action=request.getParameter("save");
-        if(action.equals("save")){
+        if(action.equals("luu")){
             
              /*   String name = request.getParameter("name");
                 String address = request.getParameter("address");
