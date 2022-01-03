@@ -59,13 +59,13 @@ public class SellerConfirmCancelServlet extends HttpServlet {
             listBooking = (List<Booking>) session.getAttribute("listBooking");
             try {
                 bookingDAO.deleteBooking(listBooking, listBookedRoom);
-                msg = "Xoa thanh cong";
+                msg = "Xoá thành công";
                 session.removeAttribute("listBooking");
                 session.removeAttribute("listDeleteBookedRoom");
                 System.out.println("Xoa thanh cong");
                 request.getSession().removeAttribute("listDeleteBookedRoom");
             } catch (SQLException ex) {
-                msg = "Xoa khong thanh cong";
+                msg = "Xoá thất bại";
                 Logger.getLogger(SellerConfirmCancelServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
