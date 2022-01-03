@@ -16,99 +16,125 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Seller Book Room Information (Search Client)</title>
+
+        <link rel="stylesheet" href="bootstraplib/bootstrap.4.0.0.min.css"
+              crossorigin="anonymous">
+        <script src="bootstraplib/jquery-3.2.1.js" crossorigin="anonymous"></script>
+        <script src="bootstraplib/popper.min.js" crossorigin="anonymous"></script>
+        <script src="bootstraplib/bootstrap.min.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <h1>Thong tin dat phong</h1>
-        <h2>Thong tin phong:</h2>
-        <table cellspacing="5" cellpadding="5" border="1">
-            <tr>
-                <th>ID</th>
-                <th>Ten</th>
-                <th>Co</th>
-                <th>Hang</th>
-                <th>Gia</th>
-                <th>Mo ta</th>
-            </tr>
-            <!--          <%
-                String bookingID = request.getParameter("booking");
-                Booking booking = (Booking) request.getSession().getAttribute("booking");
-                for (BookedRoom br : booking.getListBookedRoom()) {
-                    Room r = br.getRoom();
-                    System.out.println(r.toString());
-            %>
-            <tr>
-                <td> <%=r.getID()%> </td>
-                <td> <%=r.getSize()%> </td>
-                <td> <%=r.getType()%> </td>
-                <td> <%=r.getPricePerHour()%> </td>
-                <td> <%=r.getDescription()%> </td>
-            </tr>    
-            <%
-                }
-            %> -->
-            <c:forEach var="i" items="${booking.listBookedRoom}" varStatus="status">
-                <tr valign="top">
-                    <td>${i.room.ID}</td>
-                    <td>${i.room.name}</td>
-                    <td>${i.room.size}</td>
-                    <td>${i.room.type}</td>
-                    <td>${i.room.pricePerHour}</td>
-                    <td>${i.room.description}</td>
-                </tr>
-            </c:forEach>
-        </table>
+        <div class="container">
+            <div class="row my-2">
+                <h1>Thông tin đặt phòng</h1>
+            </div>
 
-        <h2> Thong tin khach hang:</h2>
+            <div class="row mt-4">
+                <h2>Thông tin phòng:</h2>
+                <table class="table table-striped" cellspacing="5" cellpadding="5" border="1">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên</th>
+                            <th>Cỡ</th>
+                            <th>Hạng</th>
+                            <th>Giá</th>
+                            <th>Mô tả</th>
+                        </tr>
+                    </thead>
 
-        <form action="<c:url value="/SellerBookRoomInfo" />" method="post">
-           <table>
-                <tr>
-                    <td>Ten: </td>
-                    <td><input type="text" name="name" value="Nguyen A"></td>
-                </tr>
-                <tr>
-                    <td>So dien thoai: </td>
-                    <td><input type="text"  name="phoneNumber" value="2000001"></td>
-                </tr>
-                    
-            </table>
-            <input type="submit" value="Tim">
-            <input type="hidden" name="action" value="Tim">
-        </form>
+                    <c:forEach var="i" items="${booking.listBookedRoom}" varStatus="status">
+                        <tr valign="top">
+                            <td>${i.room.ID}</td>
+                            <td>${i.room.name}</td>
+                            <td>${i.room.size}</td>
+                            <td>${i.room.type}</td>
+                            <td>${i.room.pricePerHour}</td>
+                            <td>${i.room.description}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </div>
 
-        <form action="<c:url value="/SellerBookRoomInfo" />" method="post">
-            <input type="hidden" name="action" value="Them">
-            <input type="hidden" name="name" value="${name}">
-            <input type="hidden" name="phoneNumber" value="${phoneNumber}">
-            
-            <input type="submit" value="Them">
-        </form>
+            <div class="row mt-4">
+                <form action="<c:url value="/SellerBookRoomInfo"/>" method="POST">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="name">Tên khách hàng:</label>
+                                <input type="text" name="name" id="name"
+                                       class="form-control" placeholder="Nhập tên khách hàng"
+                                       value="Nguyen A" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="phoneNumber">Số điện thoại:</label>
+                                <input type="text" class="form-control" name="phoneNumber"
+                                       id="phoneNumber" placeholder="Nhập số điện thoại" value="2000001" />
+                            </div>
+                        </div>
+                        <div class="col" style="display: flex; align-items:flex-end;">
+                            <div class="form-group">
+                                <input type="hidden" name="action" value="Tim">
+                                <input type="submit" class="btn btn-primary" name="Tim" value="Tìm kiếm" />
+                            </div>
+                        </div>
 
-        <form action="<c:url value="/SellerBookRoomInfo" />" method="post">
-            <table cellspacing="5" cellpadding="5" border="1">
-                <tr>
-                    <th>ID</th>
-                    <th>Ten</th>
-                    <th>So dien thoai</th>
-                    <th>Dia chi</th>
-                    <th>Mail</th>
-                    <th>Note</th>
-                </tr>
-                <c:forEach var="i" items="${listClient}" varStatus="status">
-                    <tr valign="top">
-                        <td>${i.ID}</td>
-                        <td>${i.name}</td>
-                        <td>${i.phoneNumber}</td>
-                        <td>${i.address}</td>
-                        <td>${i.mail}</td>
-                        <td>${i.note}</td>
-                        <td><input type="checkbox" name="selectedItems" value="<c:out value="${status.index}"/>"></td>
-                    </tr>
-                </c:forEach>    
-            </table>
-            <input type="hidden" name="action" value="Luu">
-            <input type="submit" value="Luu">
-        </form>
 
+                    </div>
+                </form>
+            </div>
+
+            <div class="row">
+                <form action="<c:url value="/SellerBookRoomInfo" />" method="post">
+
+                    <div class="col" style="display: flex; align-items:flex-end;">
+                        <div class="form-group">
+                            <input type="hidden" name="action" value="Them">
+                            <input type="hidden" name="name" value="${name}">
+                            <input type="hidden" name="phoneNumber" value="${phoneNumber}">
+                            <input type="submit" class="btn btn-primary" name="Them" value="Thêm khách hàng" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row mt-4">
+                <form action="<c:url value="/SellerBookRoomInfo" />" method="post">
+                    <table class="table table-striped" cellspacing="5" cellpadding="5" border="1">
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
+                            <th>Mail</th>
+                            <th>Note</th>
+                            <th>Chọn</th>
+                        </tr>
+                        <c:forEach var="i" items="${listClient}" varStatus="status">
+                            <tr valign="top">
+                                <td>${i.ID}</td>
+                                <td>${i.name}</td>
+                                <td>${i.phoneNumber}</td>
+                                <td>${i.address}</td>
+                                <td>${i.mail}</td>
+                                <td>${i.note}</td>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="selectedItems" value="<c:out value="${status.index}"/>">
+                                    </div>
+                                </td>
+                            </tr>
+                        </c:forEach>    
+                    </table>
+                    <input type="hidden" name="action" value="Luu">
+                    <input class="btn btn-primary" type="submit" value="Lưu">
+                </form>
+            </div>
+        </div>
     </body>
 </html>

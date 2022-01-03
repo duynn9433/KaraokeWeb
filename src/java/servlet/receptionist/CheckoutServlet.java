@@ -90,7 +90,7 @@ public class CheckoutServlet extends HttpServlet {
                     
                     int selectedBookingIndex = Integer.parseInt(request.getParameterValues("selectedBooking")[0]);
                     List<Booking> bookings = (List<Booking>) session.getAttribute(SESSION_BOOKINGS);
-                    Booking booking = bookings.get(0);
+                    Booking booking = bookings.get(selectedBookingIndex);
                     
                     dao.addUsedService(booking);
                     

@@ -53,18 +53,27 @@ public class CreateBookingServlet extends HttpServlet {
         String url = "/receptionist/CreateBooking.jsp";
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-//        System.out.println("------------");
-//        System.out.println(user.toString());
+
         LocalDateTime checkin = null;
         LocalDateTime checkout = null;
         List<Room> listRoom = null;
         RoomDAO roomDAO = new RoomDAO();
-
+        
         String action = request.getParameter("action");
         System.out.println("action " + action);
-        if (action.equals("searchFreeRoom")) {
+        if(action==null){
+            request.setAttribute("checkinStr", "2021-12-30T20:00:00");
+            request.setAttribute("checkoutStr", "2021-12-30T20:00:00");
+        } else if (action.equals("searchFreeRoom")) {
             String checkinString = (String) request.getParameter("checkin");
             String checkoutString = (String) request.getParameter("checkout");
+            
+            request.setAttribute("checkinStr", checkinString);
+            request.setAttribute("checkoutStr", checkoutString);
+            
+            checkinString = checkinString.replace('T', ' ');
+            checkoutString = checkoutString.replace('T', ' ');
+            
             request.setAttribute("checkin", checkinString);
             request.setAttribute("checkout", checkoutString);
 

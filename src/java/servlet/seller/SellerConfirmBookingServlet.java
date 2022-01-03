@@ -65,10 +65,10 @@ public class SellerConfirmBookingServlet extends HttpServlet {
             booking.setSaleOff(Float.parseFloat(request.getParameter("saleOff")));
             try {
                 bookingDAO.addBooking(booking);
-                msg="Luu thanh cong";
+                msg="Lưu thành công";
                 request.getSession().removeAttribute("booking");
             } catch (SQLException ex) {
-                msg="Luu that bai";
+                msg="Lưu thất bại";
                 Logger.getLogger(SellerConfirmBookingServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             

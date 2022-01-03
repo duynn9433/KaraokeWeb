@@ -84,7 +84,7 @@ public class CheckinServlet extends HttpServlet {
                 session.removeAttribute("action");
             } else {
                 if (request.getParameter("CREATE_BOOKING") != null) {
-                    url = "/receptionist/CreateBooking.jsp";
+                    url = "/CreateBookingServlet";   
                 } else if (request.getParameter("SELECT_STAFF") != null) {
                     int selectedBookingIndex = Integer.parseInt(request.getParameterValues("selectedBooking")[0]);
                     List<Booking> bookings = (List<Booking>) session.getAttribute(SESSION_BOOKINGS);

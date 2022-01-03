@@ -11,38 +11,77 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Income Statistic View</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <form action="<c:url value="/IncomeStatServlet"/>" method="post">
-            <label>Ngay bat dau: </label>
-            <input type="text" name="startDate" value="01/01/2020">
-            <label>Ngay ket thuc: </label>
-            <input type="text" name="endDate" value="30/04/2020">
-            <input type="hidden" name="action" value="thongKe">
-            <input type="submit" value="Thong ke">
-        </form>
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="col">
+                    <form action="<c:url value="/IncomeStatServlet"/>" method="post">
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="dt1">Ngày bắt đầu:</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <input type="date" id="dt1" name="startDate" step="1" value="2020-01-01">
+                                </div>
+                            </div>
 
+                        </div>
 
-        <table cellspacing="5" cellpadding="5" border="1">
-            <tr>
-                <th>Ten thang</th>
-                <th>Doanh thu</th>
-            </tr>
-        </tr>
-        <c:forEach var="i" items="${listIncomeStat}" varStatus="status">
-            <tr valign="top">
-                <td>${i.thang}</td>
-                <td>${i.income}</td>
-                <td>
-                    <form action="<c:url value="/IncomeStatServlet"/>" method="post"> 
-                        <input type="hidden" name="income" value="${i.income}">
-                        <input type="hidden" name="thang" value="${i.thang}">
-                        <input type="hidden" name="action" value="chiTiet">
-                        <input type="submit" value="Xem chi tiet">
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label for="dt2">Ngày kết thúc:</label>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="form-group">
+                                    <input type="date" id="dt2" name="endDate" step="1" value="2020-04-30">
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="action" value="thongKe">
+                        <input class="btn btn-primary"  type="submit" value="Thống kê">
                     </form>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
-</body>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <table class="table table-striped" cellspacing="5" cellpadding="5" border="1">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Tên tháng</th>
+                            <th>Doanh thu</th>
+                            <th>Xem chi tiết</th>
+                        </tr>
+                    </thead>
+
+                    <c:forEach var="i" items="${listIncomeStat}" varStatus="status">
+                        <tr valign="top">
+                            <td>${i.thang}</td>
+                            <td>${i.income}</td>
+                            <td>
+                                <form action="<c:url value="/IncomeStatServlet"/>" method="post"> 
+                                    <input type="hidden" name="income" value="${i.income}">
+                                    <input type="hidden" name="thang" value="${i.thang}">
+                                    <input type="hidden" name="action" value="chiTiet">
+                                    <input type="submit" value="Xem chi tiet">
+                                </form>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </div>
+
+
+    </body>
 </html>

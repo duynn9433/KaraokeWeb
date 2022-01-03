@@ -10,15 +10,18 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Tìm dịch vụ</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <h1>Search Service</h1>
+        <h1>Tìm dịch vụ</h1>
         <div>
-            <form action="<c:url value="/SearchServiceServlet"/>" method="post">
+            <form class = "form-inline" action="<c:url value="/SearchServiceServlet"/>" method="post">
                 <input type ="hidden" name ="action" value ="search">
-                <input type ="text" name = "key">
-                <input type ="submit" name ="search" value ="Tim kiem">
+                <input class = "form-control" type ="text" name = "key" required>
+                <input class = "btn btn-primary" type ="submit" name ="search" value ="Tìm kiếm">
                 <input type="hidden" name="action"  value ="search">
             </form>
         </div><br><br>
@@ -28,10 +31,10 @@
             <table cellspacing="6" cellpadding="6" border="1">
                 <tr>
                     <th>ID</th>
-                    <th>Ten</th>
-                    <th>Don vi</th>
-                    <th>Gia</th>
-                    <th>Mo ta</th>
+                    <th>Tên</th>
+                    <th>Đơn vị</th>
+                    <th>Giá</th>
+                    <th>Mô tả</th>
                 </tr>
                 
                 <c:forEach var="i" items="${listService}" varStatus="status">
@@ -45,7 +48,7 @@
                     </tr>
                 </c:forEach>
             </table>
-            <input type="submit" value="Sua" name="edit" />
+            <input class = "btn btn-primary" type="submit" value="Sửa" name="edit" />
         </form>
     </body>
 </html>

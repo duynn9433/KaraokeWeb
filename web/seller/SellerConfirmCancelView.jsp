@@ -11,6 +11,16 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Seller Confirm Cancel View</title>
+
+        <link rel="stylesheet" href="bootstraplib/bootstrap.4.0.0.min.css"
+              crossorigin="anonymous">
+        <script src="bootstraplib/jquery-3.2.1.js" crossorigin="anonymous"></script>
+        <script src="bootstraplib/popper.min.js" crossorigin="anonymous"></script>
+        <script src="bootstraplib/bootstrap.min.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        
     </head>
     <body>
         <%
@@ -29,39 +39,54 @@
                 request.getSession().removeAttribute("sellerConfirmCancelMsg");
             }
         %>
-        <h1>Thong tin huy phong</h1>
+        <div class="container">
+            <div class="row my-2">
+                <div class="col">
+                    <h1>Thông tin huỷ phòng</h1>
+                </div>
+                <div class="col">
+                    <form action ="<c:url value="/seller/SellerHome.jsp"/>" method="post">
+                        <input class="btn btn-primary" type="submit" value="Home">
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table table-striped" cellspacing="5" cellpadding="5" border="1">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID Phòng</th>
+                            <th>Tên</th>
+                            <th>Cỡ</th>
+                            <th>Hạng</th>
+                            <th>Giá</th>
+                            <th>Checkin</th>
+                            <th>Checkout</th>
+                        </tr>
+                    </thead>
 
-
-        <table cellspacing="5" cellpadding="5" border="1">
-            <tr>
-                <th>ID Phong</th>
-                <th>Ten</th>
-                <th>Co</th>
-                <th>Hang</th>
-                <th>Gia</th>
-                <th>Checkin</th>
-                <th>Checkout</th>
-            </tr>
-
-            <c:forEach var="j" items="${listDeleteBookedRoom}" >
-                <tr valign="top">
-                    <td>${j.room.ID}</td>
-                    <td>${j.room.name}</td>
-                    <td>${j.room.size}</td>
-                    <td>${j.room.type}</td>
-                    <td>${j.room.pricePerHour}</td>
-                    <td>${j.checkin}</td>
-                    <td>${j.checkout}</td>
-                </tr>
-            </c:forEach>
-        </table>
-        <form action="<c:url value="/SellerConfirmCancelServlet" />" method="post">
-            <input type="hidden" name="action"  value ="xacNhan">
-            <input type="submit" value="Xac nhan"  />
-        </form>
-        <form action ="<c:url value="/seller/SellerHome.jsp"/>" method="post">
+                    <c:forEach var="j" items="${listDeleteBookedRoom}" >
+                        <tr valign="top">
+                            <td>${j.room.ID}</td>
+                            <td>${j.room.name}</td>
+                            <td>${j.room.size}</td>
+                            <td>${j.room.type}</td>
+                            <td>${j.room.pricePerHour}</td>
+                            <td>${j.checkin}</td>
+                            <td>${j.checkout}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </div>
+            <div class="row">
+                <form action="<c:url value="/SellerConfirmCancelServlet" />" method="post">
+                    <input type="hidden" name="action"  value ="xacNhan">
+                    <input class="btn btn-primary" type="submit" value="Xác nhận"  />
+                </form>
+            </div>
+        </div>
+<!--        <form action ="<c:url value="/seller/SellerHome.jsp"/>" method="post">
 
             <input type="submit" value="Home">
-        </form>
+        </form>-->
     </body>
 </html>

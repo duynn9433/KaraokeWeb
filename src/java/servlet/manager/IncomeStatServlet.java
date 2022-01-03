@@ -54,7 +54,8 @@ public class IncomeStatServlet extends HttpServlet {
         if (action.equals("thongKe")) {
             String sdString = request.getParameter("startDate");
             String edString = request.getParameter("endDate");
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            System.out.println(sdString);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime sd = LocalDateTime.parse(sdString + " 00:00:00", dtf);
             LocalDateTime ed = LocalDateTime.parse(edString + " 23:59:59", dtf);
             try {

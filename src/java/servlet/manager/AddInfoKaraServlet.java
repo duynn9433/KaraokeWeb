@@ -56,7 +56,7 @@ public class AddInfoKaraServlet extends HttpServlet {
             karaoke = new KaraokeBar(0, name, address, des);
             
             try{
-                karaokeBarDAO.addInfoKara(karaoke);
+             //   karaokeBarDAO.addInfoKara(karaoke);
                 msg="Them thanh cong";
                 url="/manager/AddInforKara.jsp";
             }catch(Exception e){

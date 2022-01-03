@@ -47,6 +47,10 @@ public class ReceptionistHomeServlet extends HttpServlet {
                 url = "/receptionist/Checkin.jsp";
             } else if (action.equals("ACTION_CHECKOUT")) {
                 url = "/receptionist/Checkout.jsp";
+            } else if (action.equals("logOut")) {
+                url = "/index.jsp";
+                request.getSession().removeAttribute("user");
+                request.getSession().invalidate();
             }
 
         } catch (Exception e) {

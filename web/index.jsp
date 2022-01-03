@@ -5,30 +5,52 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Đăng nhập</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     </head>
-    <body>
-        <h1>Dang nhap</h1>
-        <form action="<c:url value="/CheckLoginServlet" />" method ="post">
-            <input type="hidden" name="action" value="checkLogin">
-            <table>
-                <tr>
-                    <td>Username:</td>
-                    <td><input type="text" name="username" value="receptionist"></td>
-                </tr>
-                <tr>
-                    <td>Password:</td>
-                    <td><input type="password" name="password" value="receptionist"></td>
-                </tr>
-            </table>
-            <input type="submit" value ='Dang nhap'>
+    
+    <style>
+    .btn{
+        margin-top: 50px;
+        color: black;
+        background-color: #34ce57; 
+        width: 100px;
+    }  
+    
+    .btn:hover{
+        color: black;
+        background-color: green; 
+    }
+    </style>
 
-<!--        <form action="<c:url value="/sellerHomeServlet" />" method ="post">
-<input type="submit" value ='Dang nhap Seller'>-->
-        </form>
+    <body>
+        <div class = "container-fluid">
+            <div class ="row col-12 text-center" style = "margin-top:180px;">
+                <h1>Đăng nhập</h1><br>
+                <form class = "form-inline" action="<c:url value="/CheckLoginServlet" />" method ="post">
+                    <div class ="input-group">
+                    <input type="hidden" name="action" value="checkLogin">
+                    <table>
+                        <tr>
+                            <td>Tài khoản:</td>
+                            <td><input class = "form-control" type="text" name="username" value="seller" required></td>
+                        </tr>
+                        <tr>
+                            <td>Mật khẩu:</td>
+                            <td><input class = "form-control" type="password" name="password" value="seller" required></td>
+                        </tr>
+                    </table>
+                    <input class = "btn" type="submit" value ='Đăng nhập'>
+                    </div>
+                </form>
+            </div>
+        </div>
     </body>
 </html>
